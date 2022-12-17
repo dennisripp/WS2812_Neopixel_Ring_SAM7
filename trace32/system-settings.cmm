@@ -1,0 +1,92 @@
+cd __AKT_PATH__
+
+; --------------------------------------------------------------------------------
+; @Title: Autostart-File fuer Lauterbach Debugger Trace32
+; @Description:
+;     File wird von autostart.cmm gestartet
+;     Wird hier zur Ausgabe einer Hilfeseite genutzt
+; @Author: D. Justen
+; --------------------------------------------------------------------------------
+
+PRIVATE     &param
+ENTRY %LINE &param
+
+; --------------------------------------------------------------------------------
+; Add some extra buttons to the toolbar
+; --------------------------------------------------------------------------------
+MENU.ReProgram
+(
+;	ADD
+;	TOOLBAR
+;	(
+;		TOOLITEM  "Peripherals"      ":chip"     "Per.view"
+;		SEPARATOR
+;	)
+	ADD
+	MENU
+	(
+		POPUP "Ostfalia"
+		(
+		;<icon><item_name><command>
+			MENUITEM "Do load"   "do load"
+			MENUITEM "Do Window" "do window"
+			POPUP "VAR"
+			(
+				MENUITEM "Symbole" "symbol.list"
+				MENUITEM "Locals"  "Frame.view /Locals"
+				MENUITEM "Caller"  "Frame.view /Caller"
+				MENUITEM "Register" "Register /SpotLight"
+			)
+			MENUITEM "Peripherie" "per.view "
+			MENUITEM "Breakpoints" "b.list"
+			SEPARATOR
+			MENUITEM "NXT" "d.image 0x10000000 100. 64. 4.0 /GRAYSCALE8"
+			POPUP "Edit"
+			(
+				MENUITEM "main.c"    "pedit main.c"
+				MENUITEM "makefile"  "pedit makefile"
+			)
+			POPUP "OS"
+			(
+				MENUITEM "dir/ls"      "dir"
+				MENUITEM "Current Dir" "pwd"
+				MENUITEM "cmd"         "os.screen"
+			)
+			SEPARATOR
+			MENUITEM "History"   "history"
+			MENUITEM "Area"      "area"
+			
+		)
+	)
+)
+
+PRIVATE &pwd &sys &uad
+&pwd=OS.PWD() // remember present working directory (since it might get changed)
+&sys=OS.PSD()
+&uad=VERSION.ENVironment(UAD)
+
+area.view
+print %COLOR.BLUE   "Hilfestellung zum Umgang mit TRACE32"
+print %COLOR.NORMAL "Weiterfuehrende Doku:  " %COLOR.GREEN "&sys\pdf\demo.pdf"
+print %COLOR.RED    ">>do load              " %COLOR.NORMAL "-> zum Laden des ELF-Files in den Prozessor"
+print %COLOR.RED    ">>do window            " %COLOR.NORMAL "-> zur Darstellung des Programm/Variablen/Register/...-Fenster"
+print %COLOR.RED    ">>help xxx             " %COLOR.NORMAL "-> Ohne Worte"
+print %COLOR.RED    ">>per.view             " %COLOR.NORMAL "-> zur Darstellung der Prozessorperipherie"
+print %COLOR.RED    ">>go   0x00/func       " %COLOR.NORMAL "-> fuehre Programm bis ... aus"
+print %COLOR.RED    ">>Data.List func       " %COLOR.NORMAL "-> zur Darstellung des Programmcodes"
+print %COLOR.RED    ">>data.dump ...        " %COLOR.NORMAL "-> zur Darstellung des Speicherinhaltes"
+print %COLOR.RED    "       0x000[..20.]    " %COLOR.NORMAL "-> Startadresse"
+print %COLOR.RED    "       var/func        " %COLOR.NORMAL "-> Datenbereich einer Variablen/Funktion"
+print %COLOR.RED    "       e:...           " %COLOR.NORMAL "-> Online, d.h. Updaten waehrend Prozessorlauf"
+print %COLOR.RED    ">>Register /SpotLight  " %COLOR.NORMAL "-> Registerfenster oeffnen"
+print %COLOR.RED    ">>Frame.view /Locals   " %COLOR.NORMAL "-> Open the stack frame with local variables"
+print %COLOR.RED    ">>Frame.view /Caller   " %COLOR.NORMAL "-> Open the stack frame with local variables"
+print %COLOR.RED    ">>Var.Watch var1 var2  " %COLOR.NORMAL "-> Open watch window for variables"
+print %COLOR.RED    ">>var.view %e var1     " %COLOR.NORMAL "-> Online, d.h. Update waehrend Prozesslauf"
+print %COLOR.RED    ">>Break.Set 0x1000     " %COLOR.NORMAL "-> Set software breakpoint to address 1000"
+print %COLOR.RED    ">>Break.list           " %COLOR.NORMAL "-> Anzeige aller Breakpoints"
+print               "Weitere nuetzliche Befehle"
+print %COLOR.RED    ">>print %hex data.long(d:0xfffff100)"
+print %COLOR.RED    ">>p.set p.0..31 high"
+print %COLOR.RED    ">>d.image 0x10000000 100. 64. 4.0 /GRAYSCALE8 "
+print               ">>area                 " %COLOR.NORMAL "-> Oeffnen dieses Fenster"

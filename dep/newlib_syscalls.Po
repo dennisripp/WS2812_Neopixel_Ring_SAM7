@@ -1,0 +1,90 @@
+bin/newlib_syscalls.o: newlib_syscalls.c term.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/reent.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/reent.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/_ansi.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/newlib.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/_newlib_version.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/config.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/ieeefp.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/features.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_types.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/_types.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/_default_types.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/lock.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/errno.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/errno.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/stdint.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_intsup.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_stdint.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/stdlib.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/_ansi.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/cdefs.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/stdlib.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/alloca.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/unistd.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/unistd.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/types.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/endian.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/_endian.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/select.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_sigset.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_timeval.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/timespec.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_timespec.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_pthreadtypes.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/sched.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/types.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/stdio.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stdarg.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/stdio.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/stat.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/time.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/time.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_locale.h
+term.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/reent.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/reent.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/_ansi.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/newlib.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/_newlib_version.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/config.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/ieeefp.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/features.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_types.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/_types.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/_default_types.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/lock.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/errno.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/errno.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/stdint.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_intsup.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_stdint.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/stdlib.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/_ansi.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/cdefs.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/stdlib.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/alloca.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/unistd.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/unistd.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/types.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/endian.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/_endian.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/select.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_sigset.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_timeval.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/timespec.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_timespec.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_pthreadtypes.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/sched.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/types.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/stdio.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stdarg.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/stdio.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/stat.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/time.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/time.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_locale.h:

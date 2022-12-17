@@ -1,0 +1,18 @@
+bin/low_level_init.o: low_level_init.c \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/stdint.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/_default_types.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/features.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/_newlib_version.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_intsup.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_stdint.h \
+ AT91SAM7S64.h main.h
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/stdint.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/_default_types.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/features.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/_newlib_version.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_intsup.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_stdint.h:
+AT91SAM7S64.h:
+main.h:

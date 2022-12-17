@@ -1,0 +1,52 @@
+;Start with t32marm.exe -c config.t32
+
+;uncomment the following 3 lines if you don't use already environment variables
+;changes to the actual directory names are necessary
+OS=
+SYS=__TRACE32_EXEDIR__
+HELP=__TRACE32_EXEDIR__/pdf
+TMP=__TRACE32_EXEDIR__/tmp
+
+SCREEN=
+HEADER=__TRACE32_HEADER__
+
+; Printer settings 
+;PRINTER=WINDOWS         ; all standard windows printer can be
+                         ; used from TRACE32 PowerView
+
+;configure TRACE32: simulator mode
+SIM_ONLY PBI=SIM
+ROM_ONLY PBI=
+ROM_ONLY USB
+RAM_ONLY PBI=
+RAM_ONLY USB
+RAMOPENOCD_ONLY PBI=
+RAMOPENOCD_ONLY USB
+SAMBA_ONLY PBI=
+SAMBA_ONLY USB
+
+SIM_ONLY ;Zum testen der 'Verfuegbarkeit/Erreichbarkeit' des Licence Server
+SIM_ONLY ;http://best-i.ostfalia.de:5054
+SIM_ONLY LICENSE=
+SIM_ONLY RLM_LICENSE=5055@best-i.ostfalia.de
+SIM_ONLY POOLPORT=5655
+
+;uncomment the following 3 lines if you want to use TRACE32 fonts
+SCREEN=
+;FONT=DEC
+FONT=SMALL
+
+;uncomment the following 2 lines if you want to use TRACE32 bitmap fonts
+;SCREEN=
+;FONTMODE=3
+
+;uncomment the following 2 lines if you use OPENWINDOWS
+;SCREEN=
+;WMGR=OW16
+
+;uncomment the following 2 lines if you use MOTIF
+;SCREEN=
+;WMGR=MOTIF16
+
+
+

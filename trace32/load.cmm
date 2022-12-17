@@ -1,0 +1,284 @@
+;========================================================================
+; Configuration information
+;
+; Setup the configuration information out of the table above.
+;
+; Example for AT91SAM7S256
+&flashstart=0x00100000
+&flashsize=0x40000
+&pagesize=0x100
+;&flashalgorithm="~~/demo/arm/flash/long/efcs2.bin"
+&flashalgorithm="trace32/efcs2.bin"
+
+;========================================================================
+;Specify the CPU specific settings
+SYStem.RESet
+;RAM_ONLY SYStem.CPU AT91SAM7S256
+;ROM_ONLY SYStem.CPU AT91SAM7S256
+;SIM_ONLY SYStem.CPU ARM7TDMI
+;SAMBA_ONLY SYStem.CPU AT91SAM7S256
+;RAMOPENOCD_ONLY SYStem.CPU AT91SAM7S256
+
+;Set Memory Access during runtime via DCC
+;RAM_ONLY SYStem.MemAccess TSMON3
+;ROM_ONLY SYStem.MemAccess TSMON3
+
+;Set Terminal Mode via DCC3
+;RAM_ONLY TERM.METHOD DCC3	
+;RAM_ONLY term.mode VT100
+;ROM_ONLY TERM.METHOD DCC3	
+;ROM_ONLY term.mode VT100
+;SIM_ONLY TERM.METHOD DCC3	
+;SIM_ONLY term.mode VT100
+;term.view    erfolgt in window.cmm
+
+;Inform the debugger about read only address ranges (ROM, FLASH).
+MAP.BOnchip &flashstart++(&flashsize-1)
+
+;Sets/resets the corresponding bits in the vector catch register of the core. If the
+;bit of a vector is set and the corresponding exception occurs, the processor
+;enters debug state as if there had been a breakpoint set on an instruction fetch
+;from that exception vector.
+;Prozessor ICE unterstützt nachfolgende Option leider nicht, daher nur in Simulationsmode
+;SIM_ONLY System.Option Alignment ON
+;SIM_ONLY TrOnchip.Set DABORT ON
+;SIM_ONLY TrOnchip.Set PABORT ON
+;SIM_ONLY TrOnchip.Set SWI    ON
+;SIM_ONLY TrOnchip.Set UNDEF  ON
+;SIM_ONLY tronchip.set Alignment ON
+
+;Breakpoint bug fix required on ARM7TDMI-S Rev2:
+;You need to activate this option when having an ARM7TDMI-S Rev2. The bug is fixed on Rev3 and
+;following. With this option activated and ARM7TDMIS selected as CPU type, we enable the software
+;breakpoint work around as described in the ARM errata of ARM7TDMI-S Rev2 (“consecutive breakpoint”
+;bug). Software breakpoints are set as undefined opcodes that cause the core to enter the undefined opcode
+;handler. The debugger tries to set a breakpoint at the undef vector (either software or on-chip). When a
+;breakpoint is reached the core will take the undefined exception and stop at the vector. The debugger
+;detects this state and displays the correct registers and cpu state. This work around is only suitable where
+;undefined instruction trap handling is not being used.
+;SYStem.Option BUGFIX
+
+;SIM_ONLY name.s p.0    PA0
+;SIM_ONLY name.s p.1    PA1
+;SIM_ONLY name.s p.2    PA2
+;SIM_ONLY name.s p.3    PA3
+;SIM_ONLY name.s p.4    PA4
+;SIM_ONLY name.s p.5    PA5
+;SIM_ONLY name.s p.6    PA6
+;SIM_ONLY name.s p.7    PA7
+;SIM_ONLY name.s p.8    PA8
+;SIM_ONLY name.s p.9    PA9
+;SIM_ONLY name.s p.10   PA10
+;SIM_ONLY name.s p.11   PA11
+;SIM_ONLY name.s p.12   PA12
+;SIM_ONLY name.s p.13   PA13
+;SIM_ONLY name.s p.14   PA14
+;SIM_ONLY name.s p.15   PA15
+;SIM_ONLY name.s p.16   PA16
+;SIM_ONLY name.s p.17   PA17
+;SIM_ONLY name.s p.18   PA18
+;SIM_ONLY name.s p.19   PA19
+;SIM_ONLY name.s p.20   PA20
+;SIM_ONLY name.s p.21   PA21
+;SIM_ONLY name.s p.22   PA22
+;SIM_ONLY name.s p.23   PA23
+;SIM_ONLY name.s p.24   PA24
+;SIM_ONLY name.s p.25   PA25
+;SIM_ONLY name.s p.26   PA26
+;SIM_ONLY name.s p.27   PA27
+;SIM_ONLY name.s p.28   PA28
+;SIM_ONLY name.s p.29   PA29
+;SIM_ONLY name.s p.30   PA30
+;SIM_ONLY name.s p.31   PA31
+;SIM_ONLY name.group g.PA p.PA0 p.PA1 p.PA2 p.PA3 p.PA4 p.PA5 p.PA6 p.PA7 p.PA8 p.PA9
+;SIM_ONLY name.word w.PA g.PA
+
+;SIM_ONLY name.s p.256  AIC_FIQ
+;SIM_ONLY name.s p.257  AIC_SYS
+;SIM_ONLY name.s p.258  AIC_PIOA
+;SIM_ONLY name.s p.259  AIC_RES3
+;SIM_ONLY name.s p.260  AIC_ADC
+;SIM_ONLY name.s p.261  AIC_SPI
+;SIM_ONLY name.s p.262  AIC_US0 
+;SIM_ONLY name.s p.263  AIC_US1 
+;SIM_ONLY name.s p.264  AIC_SSC 
+;SIM_ONLY name.s p.265  AIC_TWI 
+;SIM_ONLY name.s p.266  AIC_PWMC
+;SIM_ONLY name.s p.267  AIC_UDP 
+;SIM_ONLY name.s p.268  AIC_TC0 
+;SIM_ONLY name.s p.269  AIC_TC1 
+;SIM_ONLY name.s p.270  AIC_TC2 
+;SIM_ONLY name.s p.271  AIC_R15 
+;SIM_ONLY name.s p.272  AIC_R16 
+;SIM_ONLY name.s p.273  AIC_R17 
+;SIM_ONLY name.s p.274  AIC_R18 
+;SIM_ONLY name.s p.275  AIC_R19 
+;SIM_ONLY name.s p.276  AIC_R20 
+;SIM_ONLY name.s p.277  AIC_R21 
+;SIM_ONLY name.s p.278  AIC_R22 
+;SIM_ONLY name.s p.279  AIC_R23 
+;SIM_ONLY name.s p.280  AIC_R24 
+;SIM_ONLY name.s p.281  AIC_R25 
+;SIM_ONLY name.s p.282  AIC_R26 
+;SIM_ONLY name.s p.283  AIC_R27 
+;SIM_ONLY name.s p.284  AIC_R28 
+;SIM_ONLY name.s p.285  AIC_R29 
+;SIM_ONLY name.s p.286  AIC_IRQ0
+;SIM_ONLY name.s p.287  AIC_IRQ1
+;port.get
+
+;Enter debug mode
+SYStem.Up
+
+;SIM_ONLY sim.res
+;SIM_ONLY sim.load trace32/sim_NXT/sim_NXT.dll 20000 0
+;SIM_ONLY ;sim.load trace32/sim_NXT/sim_NXT.so 20000 0
+
+;Peripherie Fenster anzeigen
+;SIM_ONLY per.reprogram trace32/sim_NXT/sim_NXT.per
+
+;NXT-Display Anzeigen
+;d.image e:0x10000000 150. 250. 2.0 /GRAYSCALE8 
+
+;Register-Fenster anzeigen
+;B::Register.view /SPOTLIGHT 
+
+;Variablen-Fenster anzeigen
+;B::Var.Watch 
+
+;Programm-Fenster anzeigen
+;B::List.auto 
+
+; Disable watchdog for flash programming if watchdog may be used in 
+; window mode.
+DATA.SET 0xFFFFFD44 %LONG DATA.LONG(ASD:0xFFFFFD44)|0x00008000
+
+; Disable TICK (PA17 PULL Up)
+;RAM_ONLY PER.SET C:0xFFFFF460 %LONG 0x00020000
+;ROM_ONLY PER.SET C:0xFFFFF460 %LONG 0x00020000
+;SAMBA_ONLY PER.SET C:0xFFFFF460 %LONG 0x00020000
+;RAMOPENOCD_ONLY PER.SET C:0xFFFFF460 %LONG 0x00020000
+
+;----------------------------------------------------------------------
+;   Aus DVD\files\demo\arm\at91sam7s.cmm
+;----------------------------------------------------------------------
+;
+; Example for flash declaration of Atmel AT91SAM7S internal flash. 
+; 
+; List of AT91SAM7S derivatives and their configuration:
+;
+; CPU-Type        FlashSize   Pagesize  SRAM size  Algorithm
+;                  (Byte)      (Byte)     (Byte)
+; -----------------------------------------------------------
+; AT91SAM7S32      0x8000       0x80      0x2000   efcs.bin
+; AT91SAM7S321     0x8000       0x80      0x2000   efcs.bin
+; AT91SAM7S64     0x10000       0x80      0x4000   efcs.bin
+; AT91SAM7S128    0x20000      0x100      0x8000   efcs2.bin
+; AT91SAM7S256    0x40000      0x100     0x10000   efcs2.bin
+; AT91SAM7S512    0x80000      0x100     0x10000   efcs2.bin
+;
+; The flash is divided into pages of 128 or 256 Byte. For derivatives 
+; with 128 Byte sectors the flash algorithm binary efcs.bin has to be 
+; used. For derivatives with 256 Byte sectors the flash algorithm 
+; binary efcs2.bin has to be used.
+;
+; The internal flash is located at 0x00100000.
+; The internal SRAM is located at  0x00200000.
+;
+; Internal flash is mirrowed to address 0x0 before remap command. 
+; After remap command internal SRAM is mirrowed to address 0x0.
+;
+; HINTS:
+;
+;   Locked pages can be unlocked with FLASH.UNLOCK command and can be 
+;   locked again with FLASH.LOCK command.
+;
+;   Watchdog is critical for flash programming. The flash algorithm is 
+;   serving the watchdog if the watchdog is not used in window mode.
+;
+;   If the watchdog is setup to window mode by a running application 
+;   the watchdog should be either disbaled after first power-up or the 
+;   board should be power-up before every flash programming. If the 
+;   watchdog is disabled after power-up it cannot be enabled again by 
+;   the application because WDT_MR register is write once. Please see 
+;   below the command to disable the watchdog.
+;
+;   GPNVM bit values can be changed via at91sam7-nvm.cmm script.
+;
+; $Author: mobermeir $
+; $Date: 2013-07-02 15:31:50 +0200 (Di, 02 Jul 2013) $
+; $Rev: 2308 $
+;
+
+
+;========================================================================
+; Flash declaration
+;ROM_ONLY FLASH.RESet
+;ROM_ONLY IF &flashsize<=0x40000
+;ROM_ONLY (
+;ROM_ONLY   FLASH.Create 1. &flashstart++(&flashsize-1) &pagesize TARGET Long
+;ROM_ONLY )
+;ROM_ONLY ELSE
+;ROM_ONLY (
+;ROM_ONLY   ; Bank EFC0
+;ROM_ONLY   FLASH.Create 1. &flashstart++0x3ffff &pagesize TARGET Long 0.
+;ROM_ONLY   ; Bank EFC1
+;ROM_ONLY   FLASH.Create 2. (&flashstart+0x40000)++(&flashsize-0x40000-1) &pagesize TARGET Long 1.
+;ROM_ONLY )
+;ROM_ONLY FLASH.TARGET 0x00200000 0x00200800 0x1000 &flashalgorithm
+
+;========================================================================
+; Flash NVM bit programming example
+;DIALOG.YESNO "Program flash NVM bits"
+;ENTRY &prognvm
+;IF &prognvm 
+;(
+;  DO at91sam7-nvm
+;)
+
+;========================================================================
+; Flash programming example
+;DIALOG.YESNO "Program flash memory?"
+;ENTRY &progflash
+;IF !&progflash 
+;  ENDDO
+
+; Unlock locked pages if necessary
+;FLASH.UNLOCK ALL
+
+;ROM_ONLY FLASH.Erase.ALL
+;ROM_ONLY FLASH.Program.ALL
+
+;Wenn unter Linux compiliert wird, der Debugger jedoch unter Windows
+;läuft, sind im ELF File ungültige absolute Pathangaben enthalten,
+;die beim Laden korrigiert werden müssen
+;NewLib wurde mit -g compiliert, so dass Debug-Informationen enthalten sind
+;Pfadangaben sind jedoch die des Erstellrechners, so dass diese ebenfalls 
+;beim Laden korrigiert werden müssen
+;ftp://sourceware.org/pub/newlib/
+;Verbliebenen Symbole kommen 
+;siehe >>symbol.list.source
+Data.LOAD __INPUT_FILE__  /STRIPPART "__AKT_PATH__" /PATH . 
+
+;Der ARM Compiler wurde die NewLib leider nicht mit -g compiliert, so dass hier
+;keine Referenzen auf den SourceCode enthalten sind.
+;Data.LOAD __INPUT_FILE__  /STRIPPART "__AKT_PATH__" /PATH . /STRIPPART "\build\newlib-CVVEyx" /PATH ..
+
+
+;ROM_ONLY FLASH.Program.off
+
+;========================================================================
+;Zur Simulation eines Parameterspeichers, der nach PowerOn seinen alten 
+;Wert beibehält 
+;RAM_ONLY if File.Exist(data.bin)
+;RAM_ONLY    (
+;RAM_ONLY    d.load.BINARY data.bin 0x20ff00 /nosymbol
+;RAM_ONLY    print "ParameterRAM mit 'do save' speichern nicht vergessen"
+;RAM_ONLY    )
+;SIM_ONLY if File.Exist(data.bin)
+;SIM_ONLY    (
+;SIM_ONLY    d.load.BINARY data.bin 0x20ff00 /nosymbol
+;SIM_ONLY    print "ParameterRAM mit 'do save' speichern nicht vergessen"
+;SIM_ONLY    )
+
+ENDDO

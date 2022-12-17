@@ -1,0 +1,26 @@
+bin/nxt_motor.o: lib/nxt_motor.c \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h \
+ lib/../AT91SAM7S64.h lib/../main.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/stdint.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/_default_types.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/features.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/_newlib_version.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_intsup.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_stdint.h \
+ lib/nxt_motor.h lib/pio_pwm.h lib/aic.h lib/isr.h lib/nxt_avr.h
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h:
+lib/../AT91SAM7S64.h:
+lib/../main.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/stdint.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/_default_types.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/features.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/_newlib_version.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_intsup.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_stdint.h:
+lib/nxt_motor.h:
+lib/pio_pwm.h:
+lib/aic.h:
+lib/isr.h:
+lib/nxt_avr.h:

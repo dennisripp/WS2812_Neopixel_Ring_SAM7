@@ -1,0 +1,2212 @@
+
+; --------------------------------------------------
+; PIT (aus perat91sam7sx)
+; --------------------------------------------------
+
+tree.open "Lego Mindstorm NXT"
+	base e:0x20000000
+	
+	width 0x18
+	
+	tree.open "From AVR"
+		group.long 0x00..0x1B
+			line.long 0x00 "NXT_AVR_ADC_1"
+				hexmask.long.word 0x00 0.--9. 1 "ADC-Value Sensor 1 "
+			line.long 0x04 "NXT_AVR_ADC_2"
+				hexmask.long.word 0x04 0.--9. 1 "ADC-Value Sensor 2 "
+			line.long 0x08 "NXT_AVR_ADC_3"
+				hexmask.long.word 0x08 0.--9. 1 "ADC-Value Sensor 3 "
+			line.long 0x0C "NXT_AVR_ADC_4"
+				hexmask.long.word 0x0C 0.--9. 1 "ADC-Value Sensor 4 "
+			line.long 0x10 "NXT_AVR_BATTERY"
+				hexmask.long.word 0x10 0.--9. 1 "Battery Voltage    "
+			line.long 0x14 "NXT_AVR_BUTTON"
+				bitfld.long 0x18  0. "Mitte ,Mitte-Button" "----,Press"
+				textline "                                 "
+				bitfld.long 0x18  8. "Unten ,Unten-Button  " "----,Press"
+				textline "                                 "
+				bitfld.long 0x18 16. "Left  ,Left-Button " "----,Press"
+				textline "                                 "
+				bitfld.long 0x18 24. "Right ,Right-Button" "----,Press"
+	tree.end
+
+	tree.open "To AVR"
+		IF ((DATA.LONG(e:0x20000028)&0xff)<=0x64)
+			rgroup.long 0x28..0x2B
+				line.long 0x00 "NXT_AVR_OUTPUT_PERCENTA"
+					decmask.long 0x00 0.--7. 1  "Motor A in % "
+		ELSE
+			rgroup.long 0x28..0x2B
+				line.long 0x00 "NXT_AVR_OUTPUT_PERCENTA"
+					decmask.long 0x00 0.--7. 1 -100 "Motor A in % "
+		ENDIF
+		IF ((DATA.LONG(e:0x2000002C)&0xff)<=0x64)
+			rgroup.long 0x2C..0x2F
+				line.long 0x00 "NXT_AVR_OUTPUT_PERCENTB"
+					decmask.long 0x00 0.--7. 1  "Motor B in % "
+		ELSE
+			rgroup.long 0x2C..0x2F
+				line.long 0x00 "NXT_AVR_OUTPUT_PERCENTB"
+					decmask.long 0x00 0.--7. 1 -100 "Motor B in % "
+		ENDIF
+		IF ((DATA.LONG(e:0x20000030)&0xff)<0x64)
+			rgroup.long 0x30..0x33
+				line.long 0x00 "NXT_AVR_OUTPUT_PERCENTC"
+					decmask.long 0x00 0.--7. 1  "Motor C in % "
+		ELSE
+			rgroup.long 0x30..0x33
+				line.long 0x00 "NXT_AVR_OUTPUT_PERCENTC"
+					decmask.long 0x00 0.--7. 1 -100 "Motor C in % "
+		ENDIF
+		IF ((DATA.LONG(e:0x20000034)&0xff)<0x64)
+			rgroup.long 0x34..0x37
+				line.long 0x00 "NXT_AVR_OUTPUT_PERCENT?"
+					decmask.long 0x00 0.--7. 1  "Motor ? in % "
+		ELSE
+			rgroup.long 0x34..0x37
+				line.long 0x00 "NXT_AVR_OUTPUT_PERCENT?"
+					decmask.long 0x00 0.--7. 1 -100 "Motor ? in % "
+		ENDIF
+		
+		rgroup.long 0x20..0x3F
+			line.long 0x00 "NXT_AVR_POWER"
+			line.long 0x04 "NXT_AVR_PWM_FREQUENCY"
+			line.long 0x18 "NXT_AVR_OUTPUT_MODE"
+				bitfld.long 0x18 0. "Brake Motor A,Brake Motor A" " float (auslaufen), brake (aktiv bremsen)"
+				textline "                                 "
+				bitfld.long 0x18 1. "Brake Motor B,Brake Motor B" " float (auslaufen), brake (aktiv bremsen)"
+				textline "                                 "
+				bitfld.long 0x18 2. "Brake Motor C,Brake Motor C" " float (auslaufen), brake (aktiv bremsen)"
+				textline "                                 "
+				bitfld.long 0x18 3. "Brake Motor D,Brake Motor D" " float (auslaufen), brake (aktiv bremsen)"
+			line.long 0x1C "NXT_AVR_INPUT_POWER"
+				
+		IF   ((DATA.LONG(e:0x2000003C)&0x11)==0x00)
+			rgroup.long 0x3C..0x3F
+				textline "                                 Sensor 1: 9V-Off"
+		ELIF ((DATA.LONG(e:0x2000003C)&0x11)==0x01)
+			rgroup.long 0x3C..0x3F
+				textline "                                 Sensor 1: 9V-Pulse"
+		ELIF ((DATA.LONG(e:0x2000003C)&0x11)==0x10)
+			rgroup.long 0x3C..0x3F
+				textline "                                 Sensor 1: 9V-On"
+		ELSE
+			rgroup.long 0x3C..0x3F
+				textline "                                 Sensor 1: Undefined"
+		ENDIF
+		IF   ((DATA.LONG(e:0x2000003C)&0x22)==0x00)
+			rgroup.long 0x3C..0x3F
+				textline "                                 Sensor 2: 9V-Off"
+		ELIF ((DATA.LONG(e:0x2000003C)&0x22)==0x02)
+			rgroup.long 0x3C..0x3F
+				textline "                                 Sensor 2: 9V-Pulse"
+		ELIF ((DATA.LONG(e:0x2000003C)&0x22)==0x20)
+			rgroup.long 0x3C..0x3F
+				textline "                                 Sensor 2: 9V-On"
+		ELSE
+			rgroup.long 0x3C..0x3F
+				textline "                                 Sensor 2: Undefined"
+		ENDIF
+		IF   ((DATA.LONG(e:0x2000003C)&0x44)==0x00)
+			rgroup.long 0x3C..0x3F
+				textline "                                 Sensor 3: 9V-Off"
+		ELIF ((DATA.LONG(e:0x2000003C)&0x44)==0x04)
+			rgroup.long 0x3C..0x3F
+				textline "                                 Sensor 3: 9V-Pulse"
+		ELIF ((DATA.LONG(e:0x2000003C)&0x44)==0x40)
+			rgroup.long 0x3C..0x3F
+				textline "                                 Sensor 3: 9V-On"
+		ELSE
+			rgroup.long 0x3C..0x3F
+				textline "                                 Sensor 3: Undefined"
+		ENDIF
+		IF   ((DATA.LONG(e:0x2000003C)&0x88)==0x00)
+			rgroup.long 0x3C..0x3F
+				textline "                                 Sensor 4: 9V-Off"
+		ELIF ((DATA.LONG(e:0x2000003C)&0x88)==0x08)
+			rgroup.long 0x3C..0x3F
+				textline "                                 Sensor 4: 9V-Pulse"
+		ELIF ((DATA.LONG(e:0x2000003C)&0x88)==0x80)
+			rgroup.long 0x3C..0x3F
+				textline "                                 Sensor 4: 9V-On"
+		ELSE
+			rgroup.long 0x3C..0x3F
+				textline "                                 Sensor 4: Undefined"
+		ENDIF
+	tree.end
+
+	tree.open "Diverses"
+		group.long 0x40..0xBF
+
+		line.long 0x5C "NXT_PIO_PA23,PA23 Configuration"
+			bitfld.long 0x5c 0.--3. "DIGIA0 (P23) Mode ,Pin Data Mode 23" "Undef,Input,Output,Out-A,Out-B,Output(OC),Out-A(OC),Out-B(OC)"
+			bitfld.long 0x5c 4.     "Sate , Pin Data State 23" "Low ,High "
+		line.long 0x48 "NXT_PIO_PA18,PA18 Configuration"
+			bitfld.long 0x48 0.--3. "DIGIA1 (P18) Mode ,Pin Data Mode 18" "Undef,Input,Output,Out-A,Out-B,Output(OC),Out-A(OC),Out-B(OC)"
+			bitfld.long 0x48 4.     "Sate , Pin Data State 18" "Low ,High "
+		line.long 0x70 "NXT_PIO_PA28,PA28 Configuration"
+			bitfld.long 0x70 0.--3. "DIGIB0 (P28) Mode ,Pin Data Mode 28" "Undef,Input,Output,Out-A,Out-B,Output(OC),Out-A(OC),Out-B(OC)"
+			bitfld.long 0x70 4.     "Sate , Pin Data State 28" "Low ,High "
+		line.long 0x4C "NXT_PIO_PA19,PA19 Configuration"
+			bitfld.long 0x4C 0.--3. "DIGIB1 (P19) Mode ,Pin Data Mode 19" "Undef,Input,Output,Out-A,Out-B,Output(OC),Out-A(OC),Out-B(OC)"
+			bitfld.long 0x4C 4.     "Sate , Pin Data State 19" "Low ,High "
+		line.long 0x74 "NXT_PIO_PA29,PA29 Configuration"
+			bitfld.long 0x74 0.--3. "DIGIC0 (P29) Mode ,Pin Data Mode 29" "Undef,Input,Output,Out-A,Out-B,Output(OC),Out-A(OC),Out-B(OC)"
+			bitfld.long 0x74 4.     "Sate , Pin Data State 29" "Low ,High "
+		line.long 0x50 "NXT_PIO_PA20,PA20 Configuration"
+			bitfld.long 0x50 0.--3. "DIGIC1 (P20) Mode ,Pin Data Mode 20" "Undef,Input,Output,Out-A,Out-B,Output(OC),Out-A(OC),Out-B(OC)"
+			bitfld.long 0x50 4.     "Sate , Pin Data State 20" "Low ,High "
+		line.long 0x78 "NXT_PIO_PA30,PA30 Configuration"
+			bitfld.long 0x78 0.--3. "DIGID0 (P30) Mode ,Pin Data Mode 30" "Undef,Input,Output,Out-A,Out-B,Output(OC),Out-A(OC),Out-B(OC)"
+			bitfld.long 0x78 4.     "Sate , Pin Data State 30" "Low ,High "
+		line.long 0x08 "NXT_PIO_PA2,PA2 Configuration"
+			bitfld.long 0x08 0.--3. "DIGID1 (P 2) Mode ,Pin Data Mode  2" "Undef,Input,Output,Out-A,Out-B,Output(OC),Out-A(OC),Out-B(OC)"
+			bitfld.long 0x08 4.     "Sate , Pin Data State 2 " "Low ,High "
+
+		textline "                                 "
+		line.long 0x3C "NXT_PIO_PA15,PA15 Configuration"
+			bitfld.long 0x3C 0.--3. "TACHOA0/INTA0 (P15) Mode ,Pin Data Mode 15 " "Undef,Input,Output,Out-A,Out-B,Output(OC),Out-A(OC),Out-B(OC)"
+			bitfld.long 0x3C 4.     "Sate , Pin Data State 15" "Low ,High "
+		line.long 0x04 "NXT_PIO_PA1,PA1 Configuration"
+			bitfld.long 0x04 0.--3. "TACHOA1/DIRA  (P 1) Mode ,Pin Data Mode 1 " "Undef,Input,Output,Out-A,Out-B,Output(OC),Out-A(OC),Out-B(OC)"
+			bitfld.long 0x04 4.     "Sate , Pin Data State 1" "Low ,High "
+		line.long 0x68 "NXT_PIO_PA26,PA26 Configuration"
+			bitfld.long 0x68 0.--3. "TACHOB0/INTB0 (P26) Mode ,Pin Data Mode 26 " "Undef,Input,Output,Out-A,Out-B,Output(OC),Out-A(OC),Out-B(OC)"
+			bitfld.long 0x68 4.     "Sate , Pin Data State 26" "Low ,High "
+		line.long 0x24 "NXT_PIO_PA9,PA9 Configuration"
+			bitfld.long 0x24 0.--3. "TACHOB1/DIRB  (P 9) Mode ,Pin Data Mode 9 " "Undef,Input,Output,Out-A,Out-B,Output(OC),Out-A(OC),Out-B(OC)"
+			bitfld.long 0x24 4.     "Sate , Pin Data State 9" "Low ,High "
+		line.long 0x00 "NXT_PIO_PA0,PA0 Configuration"
+			bitfld.long 0x00 0.--3. "TACHOC0/INTC0 (P 0) Mode ,Pin Data Mode 0 " "Undef,Input,Output,Out-A,Out-B,Output(OC),Out-A(OC),Out-B(OC)"
+			bitfld.long 0x00 4.     "Sate , Pin Data State  0" "Low ,High "
+		line.long 0x20 "NXT_PIO_PA8,PA8 Configuration"
+			bitfld.long 0x20 0.--3. "TACHOC1/DIRC  (P 8) Mode ,Pin Data Mode 8 " "Undef,Input,Output,Out-A,Out-B,Output(OC),Out-A(OC),Out-B(OC)"
+			bitfld.long 0x20 4.     "Sate , Pin Data State 8" "Low ,High "
+			
+	tree.end
+
+tree.end
+; --------------------------------------------------
+
+tree "Parallel Input/Output Controller (PIO)"
+  base 0xFFFFF400
+
+tree "PIO"
+
+width 0x11
+group.long 0x08++0x03
+line.long 0x00 "PIO_PSR_Set/Clr,PIO Disable/Enable and Status Register"
+  setclrfld.long 0x00 31. -0x8 31. -0x4 31. " P31 ,PIO Disable/Enable and Status 31" "Inactive,Active"
+  setclrfld.long 0x00 30. -0x8 30. -0x4 30. "     P30 ,PIO Disable/Enable and Status 30" "Inactive,Active"
+  textline "                          "
+  setclrfld.long 0x00 29. -0x8 29. -0x4 29. " P29 ,PIO Disable/Enable and Status 29" "Inactive,Active"
+  setclrfld.long 0x00 28. -0x8 28. -0x4 28. "     P28 ,PIO Disable/Enable and Status 28" "Inactive,Active"
+  textline "                          "
+  setclrfld.long 0x00 27. -0x8 27. -0x4 27. " P27 ,PIO Disable/Enable and Status 27" "Inactive,Active"
+  setclrfld.long 0x00 26. -0x8 26. -0x4 26. "     P26 ,PIO Disable/Enable and Status 26" "Inactive,Active"
+  textline "                          "
+  setclrfld.long 0x00 25. -0x8 25. -0x4 25. " P25 ,PIO Disable/Enable and Status 25" "Inactive,Active"
+  setclrfld.long 0x00 24. -0x8 24. -0x4 24. "     P24 ,PIO Disable/Enable and Status 24" "Inactive,Active"
+  textline "                          "
+  setclrfld.long 0x00 23. -0x8 23. -0x4 23. " P23 ,PIO Disable/Enable and Status 23" "Inactive,Active"
+  setclrfld.long 0x00 22. -0x8 22. -0x4 22. "     P22 ,PIO Disable/Enable and Status 22" "Inactive,Active"
+  textline "                          "
+  setclrfld.long 0x00 21. -0x8 21. -0x4 21. " P21 ,PIO Disable/Enable and Status 21" "Inactive,Active"
+  setclrfld.long 0x00 20. -0x8 20. -0x4 20. "     P20 ,PIO Disable/Enable and Status 20" "Inactive,Active"
+  textline "                          "
+  setclrfld.long 0x00 19. -0x8 19. -0x4 19. " P19 ,PIO Disable/Enable and Status 19" "Inactive,Active"
+  setclrfld.long 0x00 18. -0x8 18. -0x4 18. "     P18 ,PIO Disable/Enable and Status 18" "Inactive,Active"
+  textline "                          "
+  setclrfld.long 0x00 17. -0x8 17. -0x4 17. " P17 ,PIO Disable/Enable and Status 17" "Inactive,Active"
+  setclrfld.long 0x00 16. -0x8 16. -0x4 16. "     P16 ,PIO Disable/Enable and Status 16" "Inactive,Active"
+  textline "                          "
+  setclrfld.long 0x00 15. -0x8 15. -0x4 15. " P15 ,PIO Disable/Enable and Status 15" "Inactive,Active"
+  setclrfld.long 0x00 14. -0x8 14. -0x4 14. "     P14 ,PIO Disable/Enable and Status 14" "Inactive,Active"
+  textline "                          "
+  setclrfld.long 0x00 13. -0x8 13. -0x4 13. " P13 ,PIO Disable/Enable and Status 13" "Inactive,Active"
+  setclrfld.long 0x00 12. -0x8 12. -0x4 12. "     P12 ,PIO Disable/Enable and Status 12" "Inactive,Active"
+  textline "                          "
+  setclrfld.long 0x00 11. -0x8 11. -0x4 11. " P11 ,PIO Disable/Enable and Status 11" "Inactive,Active"
+  setclrfld.long 0x00 10. -0x8 10. -0x4 10. "     P10 ,PIO Disable/Enable and Status 10" "Inactive,Active"
+  textline "                          "
+  setclrfld.long 0x00 9. -0x8 9. -0x4 9. " P9  ,PIO Disable/Enable and Status 9" "Inactive,Active"
+  setclrfld.long 0x00 8. -0x8 8. -0x4 8. "     P8  ,PIO Disable/Enable and Status 8" "Inactive,Active"
+  textline "                          "
+  setclrfld.long 0x00 7. -0x8 7. -0x4 7. " P7  ,PIO Disable/Enable and Status 7" "Inactive,Active"
+  setclrfld.long 0x00 6. -0x8 6. -0x4 6. "     P6  ,PIO Disable/Enable and Status 6" "Inactive,Active"
+  textline "                          "
+  setclrfld.long 0x00 5. -0x8 5. -0x4 5. " P5  ,PIO Disable/Enable and Status 5" "Inactive,Active"
+  setclrfld.long 0x00 4. -0x8 4. -0x4 4. "     P4  ,PIO Disable/Enable and Status 4" "Inactive,Active"
+  textline "                          "
+  setclrfld.long 0x00 3. -0x8 3. -0x4 3. " P3  ,PIO Disable/Enable and Status 3" "Inactive,Active"
+  setclrfld.long 0x00 2. -0x8 2. -0x4 2. "     P2  ,PIO Disable/Enable and Status 2" "Inactive,Active"
+  textline "                          "
+  setclrfld.long 0x00 1. -0x8 1. -0x4 1. " P1  ,PIO Disable/Enable and Status 1" "Inactive,Active"
+  setclrfld.long 0x00 0. -0x8 0. -0x4 0. "     P0  ,PIO Disable/Enable and Status 0" "Inactive,Active"
+
+tree.end
+
+tree "Output"
+width 0x11
+
+group.long 0x18++0x03
+line.long 0x00 "PIO_OSR_Set/Clr,Output Disable/Enable and Status Register"
+  setclrfld.long 0x00 31. -0x08 31. -0x04 31. " P31 ,Output Disable/Enable and Status 31" "Input,Output"
+  setclrfld.long 0x00 30. -0x08 30. -0x04 30. "       P30 ,Output Disable/Enable and Status 30" "Input,Output"
+  textline "                          "
+  setclrfld.long 0x00 29. -0x08 29. -0x04 29. " P29 ,Output Disable/Enable and Status 29" "Input,Output"
+  setclrfld.long 0x00 28. -0x08 28. -0x04 28. "       P28 ,Output Disable/Enable and Status 28" "Input,Output"
+  textline "                          "
+  setclrfld.long 0x00 27. -0x08 27. -0x04 27. " P27 ,Output Disable/Enable and Status 27" "Input,Output"
+  setclrfld.long 0x00 26. -0x08 26. -0x04 26. "       P26 ,Output Disable/Enable and Status 26" "Input,Output"
+  textline "                          "
+  setclrfld.long 0x00 25. -0x08 25. -0x04 25. " P25 ,Output Disable/Enable and Status 25" "Input,Output"
+  setclrfld.long 0x00 24. -0x08 24. -0x04 24. "       P24 ,Output Disable/Enable and Status 24" "Input,Output"
+  textline "                          "
+  setclrfld.long 0x00 23. -0x08 23. -0x04 23. " P23 ,Output Disable/Enable and Status 23" "Input,Output"
+  setclrfld.long 0x00 22. -0x08 22. -0x04 22. "       P22 ,Output Disable/Enable and Status 22" "Input,Output"
+  textline "                          "
+  setclrfld.long 0x00 21. -0x08 21. -0x04 21. " P21 ,Output Disable/Enable and Status 21" "Input,Output"
+  setclrfld.long 0x00 20. -0x8 20. -0x4 20. "       P20 ,Output Disable/Enable and Status 20" "Input,Output"
+  textline "                          "
+  setclrfld.long 0x00 19. -0x8 19. -0x4 19. " P19 ,Output Disable/Enable and Status 19" "Input,Output"
+  setclrfld.long 0x00 18. -0x8 18. -0x4 18. "       P18 ,Output Disable/Enable and Status 18" "Input,Output"
+  textline "                          "
+  setclrfld.long 0x00 17. -0x8 17. -0x4 17. " P17 ,Output Disable/Enable and Status 17" "Input,Output"
+  setclrfld.long 0x00 16. -0x8 16. -0x4 16. "       P16 ,Output Disable/Enable and Status 16" "Input,Output"
+  textline "                          "
+  setclrfld.long 0x00 15. -0x8 15. -0x4 15. " P15 ,Output Disable/Enable and Status 15" "Input,Output"
+  setclrfld.long 0x00 14. -0x8 14. -0x4 14. "       P14 ,Output Disable/Enable and Status 14" "Input,Output"
+  textline "                          "
+  setclrfld.long 0x00 13. -0x8 13. -0x4 13. " P13 ,Output Disable/Enable and Status 13" "Input,Output"
+  setclrfld.long 0x00 12. -0x8 12. -0x4 12. "       P12 ,Output Disable/Enable and Status 12" "Input,Output"
+  textline "                          "
+  setclrfld.long 0x00 11. -0x8 11. -0x4 11. " P11 ,Output Disable/Enable and Status 11" "Input,Output"
+  setclrfld.long 0x00 10. -0x8 10. -0x4 10. "       P10 ,Output Disable/Enable and Status 10" "Input,Output"
+  textline "                          "
+  setclrfld.long 0x00 9. -0x8 9. -0x4 9. " P9  ,Output Disable/Enable and Status 9" "Input,Output"
+  setclrfld.long 0x00 8. -0x8 8. -0x4 8. "       P8  ,Output Disable/Enable and Status 8" "Input,Output"
+  textline "                          "
+  setclrfld.long 0x00 7. -0x8 7. -0x4 7. " P7  ,Output Disable/Enable and Status 7" "Input,Output"
+  setclrfld.long 0x00 6. -0x8 6. -0x4 6. "       P6  ,Output Disable/Enable and Status 6" "Input,Output"
+  textline "                          "
+  setclrfld.long 0x00 5. -0x8 5. -0x4 5. " P5  ,Output Disable/Enable and Status 5" "Input,Output"
+  setclrfld.long 0x00 4. -0x8 4. -0x4 4. "       P4  ,Output Disable/Enable and Status 4" "Input,Output"
+  textline "                          "
+  setclrfld.long 0x00 3. -0x8 3. -0x4 3. " P3  ,Output Disable/Enable and Status 3" "Input,Output"
+  setclrfld.long 0x00 2. -0x8 2. -0x4 2. "       P2  ,Output Disable/Enable and Status 2" "Input,Output"
+  textline "                          "
+  setclrfld.long 0x00 1. -0x8 1. -0x4 1. " P1  ,Output Disable/Enable and Status 1" "Input,Output"
+  setclrfld.long 0x00 0. -0x8 0. -0x4 0. "       P0  ,Output Disable/Enable and Status 0" "Input,Output"
+
+tree.end
+
+
+tree "Filter"
+width 0x12
+
+group.long 0x28++0x03
+line.long 0x00 "PIO_IFSR_Set/Clr,Glitch Input Filter Disable/Enable and Status Register"
+  setclrfld.long 0x00 31. -0x8 31. -0x4 31. " P31 ,Input Filter Disable/Enable and Status 31" "Disabled,Enabled"
+  setclrfld.long 0x00 30. -0x8 30. -0x4 30. "     P30 ,Input Filter Disable/Enable and Status 30" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 29. -0x8 29. -0x4 29. " P29 ,Input Filter Disable/Enable and Status 29" "Disabled,Enabled"
+  setclrfld.long 0x00 28. -0x8 28. -0x4 28. "     P28 ,Input Filter Disable/Enable and Status 28" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 27. -0x8 27. -0x4 27. " P27 ,Input Filter Disable/Enable and Status 27" "Disabled,Enabled"
+  setclrfld.long 0x00 26. -0x8 26. -0x4 26. "     P26 ,Input Filter Disable/Enable and Status 26" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 25. -0x8 25. -0x4 25. " P25 ,Input Filter Disable/Enable and Status 25" "Disabled,Enabled"
+  setclrfld.long 0x00 24. -0x8 24. -0x4 24. "     P24 ,Input Filter Disable/Enable and Status 24" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 23. -0x8 23. -0x4 23. " P23 ,Input Filter Disable/Enable and Status 23" "Disabled,Enabled"
+  setclrfld.long 0x00 22. -0x8 22. -0x4 22. "     P22 ,Input Filter Disable/Enable and Status 22" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 21. -0x8 21. -0x4 21. " P21 ,Input Filter Disable/Enable and Status 21" "Disabled,Enabled"
+  setclrfld.long 0x00 20. -0x8 20. -0x4 20. "     P20 ,Input Filter Disable/Enable and Status 20" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 19. -0x8 19. -0x4 19. " P19 ,Input Filter Disable/Enable and Status 19" "Disabled,Enabled"
+  setclrfld.long 0x00 18. -0x8 18. -0x4 18. "     P18 ,Input Filter Disable/Enable and Status 18" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 17. -0x8 17. -0x4 17. " P17 ,Input Filter Disable/Enable and Status 17" "Disabled,Enabled"
+  setclrfld.long 0x00 16. -0x8 16. -0x4 16. "     P16 ,Input Filter Disable/Enable and Status 16" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 15. -0x8 15. -0x4 15. " P15 ,Input Filter Disable/Enable and Status 15" "Disabled,Enabled"
+  setclrfld.long 0x00 14. -0x8 14. -0x4 14. "     P14 ,Input Filter Disable/Enable and Status 14" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 13. -0x8 13. -0x4 13. " P13 ,Input Filter Disable/Enable and Status 13" "Disabled,Enabled"
+  setclrfld.long 0x00 12. -0x8 12. -0x4 12. "     P12 ,Input Filter Disable/Enable and Status 12" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 11. -0x8 11. -0x4 11. " P11 ,Input Filter Disable/Enable and Status 11" "Disabled,Enabled"
+  setclrfld.long 0x00 10. -0x8 10. -0x4 10. "     P10 ,Input Filter Disable/Enable and Status 10" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 9. -0x8 9. -0x4 9. " P9  ,Input Filter Disable/Enable and Status 9" "Disabled,Enabled"
+  setclrfld.long 0x00 8. -0x8 8. -0x4 8. "     P8  ,Input Filter Disable/Enable and Status 8" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 7. -0x8 7. -0x4 7. " P7  ,Input Filter Disable/Enable and Status 7" "Disabled,Enabled"
+  setclrfld.long 0x00 6. -0x8 6. -0x4 6. "     P6  ,Input Filter Disable/Enable and Status 6" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 5. -0x8 5. -0x4 5. " P5  ,Input Filter Disable/Enable and Status 5" "Disabled,Enabled"
+  setclrfld.long 0x00 4. -0x8 4. -0x4 4. "     P4  ,Input Filter Disable/Enable and Status 4" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 3. -0x8 3. -0x4 3. " P3  ,Input Filter Disable/Enable and Status 3" "Disabled,Enabled"
+  setclrfld.long 0x00 2. -0x8 2. -0x4 2. "     P2  ,Input Filter Disable/Enable and Status 2" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 1. -0x8 1. -0x4 1. " P1  ,Input Filter Disable/Enable and Status 1" "Disabled,Enabled"
+  setclrfld.long 0x00 0. -0x8 0. -0x4 0. "     P0  ,Input Filter Disable/Enable and Status 0" "Disabled,Enabled"
+
+
+tree.end
+
+tree "Data"
+group.long 0x38++0x03
+line.long 0x00 "PIO_ODSR_Set/Clr,Output Data Status Register"
+  setclrfld.long 0x00 31. -0x8 31. -0x4 31. " P31 ,Output Data Status 31" "Low,High"
+  setclrfld.long 0x00 30. -0x8 30. -0x4 30. "         P30 ,Output Data Status 30" "Low,High"
+  setclrfld.long 0x00 29. -0x8 29. -0x4 29. "         P29 ,Output Data Status 29" "Low,High"
+  textline "                           "
+  setclrfld.long 0x00 28. -0x8 28. -0x4 28. " P28 ,Output Data Status 28" "Low,High"
+  setclrfld.long 0x00 27. -0x8 27. -0x4 27. "         P27 ,Output Data Status 27" "Low,High"
+  setclrfld.long 0x00 26. -0x8 26. -0x4 26. "         P26 ,Output Data Status 26" "Low,High"
+  textline "                           "
+  setclrfld.long 0x00 25. -0x8 25. -0x4 25. " P25 ,Output Data Status 25" "Low,High"
+  setclrfld.long 0x00 24. -0x8 24. -0x4 24. "         P24 ,Output Data Status 24" "Low,High"
+  setclrfld.long 0x00 23. -0x8 23. -0x4 23. "         P23 ,Output Data Status 23" "Low,High"
+  textline "                           "
+  setclrfld.long 0x00 22. -0x8 22. -0x4 22. " P22 ,Output Data Status 22" "Low,High"
+  setclrfld.long 0x00 21. -0x8 21. -0x4 21. "         P21 ,Output Data Status 21" "Low,High"
+  setclrfld.long 0x00 20. -0x8 20. -0x4 20. "         P20 ,Output Data Status 20" "Low,High"
+  textline "                           "
+  setclrfld.long 0x00 19. -0x8 19. -0x4 19. " P19 ,Output Data Status 19" "Low,High"
+  setclrfld.long 0x00 18. -0x8 18. -0x4 18. "         P18 ,Output Data Status 18" "Low,High"
+  setclrfld.long 0x00 17. -0x8 17. -0x4 17. "         P17 ,Output Data Status 17" "Low,High"
+  textline "                           "
+  setclrfld.long 0x00 16. -0x8 16. -0x4 16. " P16 ,Output Data Status 16" "Low,High"
+  setclrfld.long 0x00 15. -0x8 15. -0x4 15. "         P15 ,Output Data Status 15" "Low,High"
+  setclrfld.long 0x00 14. -0x8 14. -0x4 14. "         P14 ,Output Data Status 14" "Low,High"
+  textline "                           "
+  setclrfld.long 0x00 13. -0x8 13. -0x4 13. " P13 ,Output Data Status 13" "Low,High"
+  setclrfld.long 0x00 12. -0x8 12. -0x4 12. "         P12 ,Output Data Status 12" "Low,High"
+  setclrfld.long 0x00 11. -0x8 11. -0x4 11. "         P11 ,Output Data Status 11" "Low,High"
+  textline "                           "
+  setclrfld.long 0x00 10. -0x8 10. -0x4 10. " P10 ,Output Data Status 10" "Low,High"
+  setclrfld.long 0x00 9. -0x8 9. -0x4 9. "         P9  ,Output Data Status 9" "Low,High"
+  setclrfld.long 0x00 8. -0x8 8. -0x4 8. "         P8  ,Output Data Status 8" "Low,High"
+  textline "                           "
+  setclrfld.long 0x00 7. -0x8 7. -0x4 7. " P7  ,Output Data Status 7" "Low,High"
+  setclrfld.long 0x00 6. -0x8 6. -0x4 6. "         P6  ,Output Data Status 6" "Low,High"
+  setclrfld.long 0x00 5. -0x8 5. -0x4 5. "         P5  ,Output Data Status 5" "Low,High"
+  textline "                           "
+  setclrfld.long 0x00 4. -0x8 4. -0x4 4. " P4  ,Output Data Status 4" "Low,High"
+  setclrfld.long 0x00 3. -0x8 3. -0x4 3. "         P3  ,Output Data Status 3" "Low,High"
+  setclrfld.long 0x00 2. -0x8 2. -0x4 2. "         P2  ,Output Data Status 2" "Low,High"
+  textline "                           "
+  setclrfld.long 0x00 1. -0x8 1. -0x4 1. " P1  ,Output Data Status 1" "Low,High"
+  setclrfld.long 0x00 0. -0x8 0. -0x4 0. "         P0  ,Output Data Status 0" "Low,High"
+
+rgroup.long 0x3c++0x03
+line.long 0x00 "PIO_PDSR,Pin Data Status Register"
+  bitfld.long 0x00 31. " P31 ,Pin Data Status 31" "Low,High"
+  bitfld.long 0x00 30. "         P30 ,Pin Data Status 30" "Low,High"
+  bitfld.long 0x00 29. "         P29 ,Pin Data Status 29" "Low,High"
+  textline "                           "
+  bitfld.long 0x00 28. " P28 ,Pin Data Status 28" "Low,High"
+  bitfld.long 0x00 27. "         P27 ,Pin Data Status 27" "Low,High"
+  bitfld.long 0x00 26. "         P26 ,Pin Data Status 26" "Low,High"
+  textline "                           "
+  bitfld.long 0x00 25. " P25 ,Pin Data Status 25" "Low,High"
+  bitfld.long 0x00 24. "         P24 ,Pin Data Status 24" "Low,High"
+  bitfld.long 0x00 23. "         P23 ,Pin Data Status 23" "Low,High"
+  textline "                           "
+  bitfld.long 0x00 22. " P22 ,Pin Data Status 22" "Low,High"
+  bitfld.long 0x00 21. "         P21 ,Pin Data Status 21" "Low,High"
+  bitfld.long 0x00 20. "         P20 ,Pin Data Status 20" "Low,High"
+  textline "                           "
+  bitfld.long 0x00 19. " P19 ,Pin Data Status 19" "Low,High"
+  bitfld.long 0x00 18. "         P18 ,Pin Data Status 18" "Low,High"
+  bitfld.long 0x00 17. "         P17 ,Pin Data Status 17" "Low,High"
+  textline "                           "
+  bitfld.long 0x00 16. " P16 ,Pin Data Status 16" "Low,High"
+  bitfld.long 0x00 15. "         P15 ,Pin Data Status 15" "Low,High"
+  bitfld.long 0x00 14. "         P14 ,Pin Data Status 14" "Low,High"
+  textline "                           "
+  bitfld.long 0x00 13. " P13 ,Pin Data Status 13" "Low,High"
+  bitfld.long 0x00 12. "         P12 ,Pin Data Status 12" "Low,High"
+  bitfld.long 0x00 11. "         P11 ,Pin Data Status 11" "Low,High"
+  textline "                           "
+  bitfld.long 0x00 10. " P10 ,Pin Data Status 10" "Low,High"
+  bitfld.long 0x00 9. "         P9  ,Pin Data Status 9" "Low,High"
+  bitfld.long 0x00 8. "         P8  ,Pin Data Status 8" "Low,High"
+  textline "                           "
+  bitfld.long 0x00 7. " P7  ,Pin Data Status 7" "Low,High"
+  bitfld.long 0x00 6. "         P6  ,Pin Data Status 6" "Low,High"
+  bitfld.long 0x00 5. "         P5  ,Pin Data Status 5" "Low,High"
+  textline "                           "
+  bitfld.long 0x00 4. " P4  ,Pin Data Status 4" "Low,High"
+  bitfld.long 0x00 3. "         P3  ,Pin Data Status 3" "Low,High"
+  bitfld.long 0x00 2. "         P2  ,Pin Data Status 2" "Low,High"
+  textline "                           "
+  bitfld.long 0x00 1. " P1  ,Pin Data Status 1" "Low,High"
+  bitfld.long 0x00 0. "         P0  ,Pin Data Status 0" "Low,High"
+
+tree.end
+
+tree "Interrupt"
+
+group.long 0x48++0x03
+line.long 0x00 "PIO_IMR_Set/Clr,Interrupt Enable/Mask Register"
+  setclrfld.long 0x00 31. -0x8 31. -0x4 31. " P31 ,Input Change Interrupt Enable/Mask 31" "Disabled,Enabled"
+  setclrfld.long 0x00 30. -0x8 30. -0x4 30. "     P30 ,Input Change Interrupt Enable/Mask 30" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 29. -0x8 29. -0x4 29. " P29 ,Input Change Interrupt Enable/Mask 29" "Disabled,Enabled"
+  setclrfld.long 0x00 28. -0x8 28. -0x4 28. "     P28 ,Input Change Interrupt Enable/Mask 28" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 27. -0x8 27. -0x4 27. " P27 ,Input Change Interrupt Enable/Mask 27" "Disabled,Enabled"
+  setclrfld.long 0x00 26. -0x8 26. -0x4 26. "     P26 ,Input Change Interrupt Enable/Mask 26" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 25. -0x8 25. -0x4 25. " P25 ,Input Change Interrupt Enable/Mask 25" "Disabled,Enabled"
+  setclrfld.long 0x00 24. -0x8 24. -0x4 24. "     P24 ,Input Change Interrupt Enable/Mask 24" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 23. -0x8 23. -0x4 23. " P23 ,Input Change Interrupt Enable/Mask 23" "Disabled,Enabled"
+  setclrfld.long 0x00 22. -0x8 22. -0x4 22. "     P22 ,Input Change Interrupt Enable/Mask 22" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 21. -0x8 21. -0x4 21. " P21 ,Input Change Interrupt Enable/Mask 21" "Disabled,Enabled"
+  setclrfld.long 0x00 20. -0x8 20. -0x4 20. "     P20 ,Input Change Interrupt Enable/Mask 20" "Disabled,Enabled"
+  textline "                           "         
+  setclrfld.long 0x00 19. -0x8 19. -0x4 19. " P19 ,Input Change Interrupt Enable/Mask 19" "Disabled,Enabled"
+  setclrfld.long 0x00 18. -0x8 18. -0x4 18. "     P18 ,Input Change Interrupt Enable/Mask 18" "Disabled,Enabled"
+  textline "                           "         
+  setclrfld.long 0x00 17. -0x8 17. -0x4 17. " P17 ,Input Change Interrupt Enable/Mask 17" "Disabled,Enabled"
+  setclrfld.long 0x00 16. -0x8 16. -0x4 16. "     P16 ,Input Change Interrupt Enable/Mask 16" "Disabled,Enabled"
+  textline "                           "         
+  setclrfld.long 0x00 15. -0x8 15. -0x4 15. " P15 ,Input Change Interrupt Enable/Mask 15" "Disabled,Enabled"
+  setclrfld.long 0x00 14. -0x8 14. -0x4 14. "     P14 ,Input Change Interrupt Enable/Mask 14" "Disabled,Enabled"
+  textline "                           "         
+  setclrfld.long 0x00 13. -0x8 13. -0x4 13. " P13 ,Input Change Interrupt Enable/Mask 13" "Disabled,Enabled"
+  setclrfld.long 0x00 12. -0x8 12. -0x4 12. "     P12 ,Input Change Interrupt Enable/Mask 12" "Disabled,Enabled"
+  textline "                           "         
+  setclrfld.long 0x00 11. -0x8 11. -0x4 11. " P11 ,Input Change Interrupt Enable/Mask 11" "Disabled,Enabled"
+  setclrfld.long 0x00 10. -0x8 10. -0x4 10. "     P10 ,Input Change Interrupt Enable/Mask 10" "Disabled,Enabled"
+  textline "                           "         
+  setclrfld.long 0x00 9. -0x8 9. -0x4 9. " P9  ,Input Change Interrupt Enable/Mask 9" "Disabled,Enabled"
+  setclrfld.long 0x00 8. -0x8 8. -0x4 8. "     P8  ,Input Change Interrupt Enable/Mask 8" "Disabled,Enabled"
+  textline "                           "         
+  setclrfld.long 0x00 7. -0x8 7. -0x4 7. " P7  ,Input Change Interrupt Enable/Mask 7" "Disabled,Enabled"
+  setclrfld.long 0x00 6. -0x8 6. -0x4 6. "     P6  ,Input Change Interrupt Enable/Mask 6" "Disabled,Enabled"
+  textline "                           "         
+  setclrfld.long 0x00 5. -0x8 5. -0x4 5. " P5  ,Input Change Interrupt Enable/Mask 5" "Disabled,Enabled"
+  setclrfld.long 0x00 4. -0x8 4. -0x4 4. "     P4  ,Input Change Interrupt Enable/Mask 4" "Disabled,Enabled"
+  textline "                           "         
+  setclrfld.long 0x00 3. -0x8 3. -0x4 3. " P3  ,Input Change Interrupt Enable/Mask 3" "Disabled,Enabled"
+  setclrfld.long 0x00 2. -0x8 2. -0x4 2. "     P2  ,Input Change Interrupt Enable/Mask 2" "Disabled,Enabled"
+  textline "                           "         
+  setclrfld.long 0x00 1. -0x8 1. -0x4 1. " P1  ,Input Change Interrupt Enable/Mask 1" "Disabled,Enabled"
+  setclrfld.long 0x00 0. -0x8 0. -0x4 0. "     P0  ,Input Change Interrupt Enable/Mask 0" "Disabled,Enabled"
+        
+width 0x9
+rgroup.long 0x4c++0x03  
+line.long 0x0 "PIO_ISR,Interrupt Status Register"
+  bitfld.long 0x0 31. " P31 ,Input Change Interrupt Status 31" "Not changed,Changed"
+  bitfld.long 0x0 30. "  P30 ,Input Change Interrupt Status 30" "Not changed,Changed"
+  textline "                  "
+  bitfld.long 0x0 29. " P29 ,Input Change Interrupt Status 29" "Not changed,Changed"
+  bitfld.long 0x0 28. "  P28 ,Input Change Interrupt Status 28" "Not changed,Changed"
+  textline "                  "
+  bitfld.long 0x0 27. " P27 ,Input Change Interrupt Status 27" "Not changed,Changed"
+  bitfld.long 0x0 26. "  P26 ,Input Change Interrupt Status 26" "Not changed,Changed"
+  textline "                  "
+  bitfld.long 0x0 25. " P25 ,Input Change Interrupt Status 25" "Not changed,Changed"
+  bitfld.long 0x0 24. "  P24 ,Input Change Interrupt Status 24" "Not changed,Changed"
+  textline "                  "
+  bitfld.long 0x0 23. " P23 ,Input Change Interrupt Status 23" "Not changed,Changed"
+  bitfld.long 0x0 22. "  P22 ,Input Change Interrupt Status 22" "Not changed,Changed"
+  textline "                  "
+  bitfld.long 0x0 21. " P21 ,Input Change Interrupt Status 21" "Not changed,Changed"
+  bitfld.long 0x0 20. "  P20 ,Input Change Interrupt Status 20" "Not changed,Changed"
+  textline "                  "
+  bitfld.long 0x0 19. " P19 ,Input Change Interrupt Status 19" "Not changed,Changed"
+  bitfld.long 0x0 18. "  P18 ,Input Change Interrupt Status 18" "Not changed,Changed"
+  textline "                  "
+  bitfld.long 0x0 17. " P17 ,Input Change Interrupt Status 17" "Not changed,Changed"
+  bitfld.long 0x0 16. "  P16 ,Input Change Interrupt Status 16" "Not changed,Changed"
+  textline "                  "
+  bitfld.long 0x0 15. " P15 ,Input Change Interrupt Status 15" "Not changed,Changed"
+  bitfld.long 0x0 14. "  P14 ,Input Change Interrupt Status 14" "Not changed,Changed"
+  textline "                  "
+  bitfld.long 0x0 13. " P13 ,Input Change Interrupt Status 13" "Not changed,Changed"
+  bitfld.long 0x0 12. "  P12 ,Input Change Interrupt Status 12" "Not changed,Changed"
+  textline "                  "
+  bitfld.long 0x0 11. " P11 ,Input Change Interrupt Status 11" "Not changed,Changed"
+  bitfld.long 0x0 10. "  P10 ,Input Change Interrupt Status 10" "Not changed,Changed"
+  textline "                  "
+  bitfld.long 0x0 9. " P9  ,Input Change Interrupt Status 9" "Not changed,Changed"
+  bitfld.long 0x0 8. "  P8  ,Input Change Interrupt Status 8" "Not changed,Changed"
+  textline "                  "
+  bitfld.long 0x0 7. " P7  ,Input Change Interrupt Status 7" "Not changed,Changed"
+  bitfld.long 0x0 6. "  P6  ,Input Change Interrupt Status 6" "Not changed,Changed"
+  textline "                  "
+  bitfld.long 0x0 5. " P5  ,Input Change Interrupt Status 5" "Not changed,Changed"
+  bitfld.long 0x0 4. "  P4  ,Input Change Interrupt Status 4" "Not changed,Changed"
+  textline "                  "
+  bitfld.long 0x0 3. " P3  ,Input Change Interrupt Status 3" "Not changed,Changed"
+  bitfld.long 0x0 2. "  P2  ,Input Change Interrupt Status 2" "Not changed,Changed"
+  textline "                  "
+  bitfld.long 0x0 1. " P1  ,Input Change Interrupt Status 1" "Not changed,Changed"
+  bitfld.long 0x0 0. "  P0  ,Input Change Interrupt Status 0" "Not changed,Changed"
+tree.end
+
+tree "Multi-driver"
+width 0x12
+
+
+group.long 0x58++0x03
+line.long 0x00 "PIO_MDSR_Set/Clr,Multi-driver Status Register"
+  setclrfld.long 0x00 31. -0x8 31. -0x4 31. " P31 ,Multi Drive Disable/Enable and Status 31" "Disabled,Enabled"
+  setclrfld.long 0x00 30. -0x8 30. -0x4 30. "     P30 ,Multi Drive Disable/Enable and Status 30" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 29. -0x8 29. -0x4 29. " P29 ,Multi Drive Disable/Enable and Status 29" "Disabled,Enabled"
+  setclrfld.long 0x00 28. -0x8 28. -0x4 28. "     P28 ,Multi Drive Disable/Enable and Status 28" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 27. -0x8 27. -0x4 27. " P27 ,Multi Drive Disable/Enable and Status 27" "Disabled,Enabled"
+  setclrfld.long 0x00 26. -0x8 26. -0x4 26. "     P26 ,Multi Drive Disable/Enable and Status 26" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 25. -0x8 25. -0x4 25. " P25 ,Multi Drive Disable/Enable and Status 25" "Disabled,Enabled"
+  setclrfld.long 0x00 24. -0x8 24. -0x4 24. "     P24 ,Multi Drive Disable/Enable and Status 24" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 23. -0x8 23. -0x4 23. " P23 ,Multi Drive Disable/Enable and Status 23" "Disabled,Enabled"
+  setclrfld.long 0x00 22. -0x8 22. -0x4 22. "     P22 ,Multi Drive Disable/Enable and Status 22" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 21. -0x8 21. -0x4 21. " P21 ,Multi Drive Disable/Enable and Status 21" "Disabled,Enabled"
+  setclrfld.long 0x00 20. -0x8 20. -0x4 20. "     P20 ,Multi Drive Disable/Enable and Status 20" "Disabled,Enabled"
+  textline "                           "                  
+  setclrfld.long 0x00 19. -0x8 19. -0x4 19. " P19 ,Multi Drive Disable/Enable and Status 19" "Disabled,Enabled"
+  setclrfld.long 0x00 18. -0x8 18. -0x4 18. "     P18 ,Multi Drive Disable/Enable and Status 18" "Disabled,Enabled"
+  textline "                           "                 
+  setclrfld.long 0x00 17. -0x8 17. -0x4 17. " P17 ,Multi Drive Disable/Enable and Status 17" "Disabled,Enabled"
+  setclrfld.long 0x00 16. -0x8 16. -0x4 16. "     P16 ,Multi Drive Disable/Enable and Status 16" "Disabled,Enabled"
+  textline "                           "                  
+  setclrfld.long 0x00 15. -0x8 15. -0x4 15. " P15 ,Multi Drive Disable/Enable and Status 15" "Disabled,Enabled"
+  setclrfld.long 0x00 14. -0x8 14. -0x4 14. "     P14 ,Multi Drive Disable/Enable and Status 14" "Disabled,Enabled"
+  textline "                           "                 
+  setclrfld.long 0x00 13. -0x8 13. -0x4 13. " P13 ,Multi Drive Disable/Enable and Status 13" "Disabled,Enabled"
+  setclrfld.long 0x00 12. -0x8 12. -0x4 12. "     P12 ,Multi Drive Disable/Enable and Status 12" "Disabled,Enabled"
+  textline "                           "                  
+  setclrfld.long 0x00 11. -0x8 11. -0x4 11. " P11 ,Multi Drive Disable/Enable and Status 11" "Disabled,Enabled"
+  setclrfld.long 0x00 10. -0x8 10. -0x4 10. "     P10 ,Multi Drive Disable/Enable and Status 10" "Disabled,Enabled"
+  textline "                           "                  
+  setclrfld.long 0x00 9. -0x8 9. -0x4 9. " P9  ,Multi Drive Disable/Enable and Status 9" "Disabled,Enabled"
+  setclrfld.long 0x00 8. -0x8 8. -0x4 8. "     P8  ,Multi Drive Disable/Enable and Status 8" "Disabled,Enabled"
+  textline "                           "                  
+  setclrfld.long 0x00 7. -0x8 7. -0x4 7. " P7  ,Multi Drive Disable/Enable and Status 7" "Disabled,Enabled"
+  setclrfld.long 0x00 6. -0x8 6. -0x4 6. "     P6  ,Multi Drive Disable/Enable and Status 6" "Disabled,Enabled"
+  textline "                           "                  
+  setclrfld.long 0x00 5. -0x8 5. -0x4 5. " P5  ,Multi Drive Disable/Enable and Status 5" "Disabled,Enabled"
+  setclrfld.long 0x00 4. -0x8 4. -0x4 4. "     P4  ,Multi Drive Disable/Enable and Status 4" "Disabled,Enabled"
+  textline "                           "                  
+  setclrfld.long 0x00 3. -0x8 3. -0x4 3. " P3  ,Multi Drive Disable/Enable and Status 3" "Disabled,Enabled"
+  setclrfld.long 0x00 2. -0x8 2. -0x4 2. "     P2  ,Multi Drive Disable/Enable and Status 2" "Disabled,Enabled"
+  textline "                           "                  
+  setclrfld.long 0x00 1. -0x8 1. -0x4 1. " P1  ,Multi Drive Disable/Enable and Status 1" "Disabled,Enabled"
+  setclrfld.long 0x00 0. -0x8 0. -0x4 0. "     P0  ,Multi Drive Disable/Enable and Status 0" "Disabled,Enabled"
+  
+  
+tree.end
+
+
+tree "Pull-up"
+
+
+
+group.long 0x68++0x03
+line.long 0x00 "PIO_PUSR_Set/Clr,Pad Pull-up Disable/Enable and Status Register"
+  setclrfld.long 0x00 31. -0x8 31. -0x4 31. " P31 ,Pull Up Disable/Enable and Status 31" "Enabled,Disabled"
+  setclrfld.long 0x00 30. -0x8 30. -0x4 30. "     P30 ,Pull Up Disable/Enable and Status 30" "Enabled,Disabled"
+  textline "                           "
+  setclrfld.long 0x00 29. -0x8 29. -0x4 29. " P29 ,Pull Up Disable/Enable and Status 29" "Enabled,Disabled"
+  setclrfld.long 0x00 28. -0x8 28. -0x4 28. "     P28 ,Pull Up Disable/Enable and Status 28" "Enabled,Disabled"
+  textline "                           "
+  setclrfld.long 0x00 27. -0x8 27. -0x4 27. " P27 ,Pull Up Disable/Enable and Status 27" "Enabled,Disabled"
+  setclrfld.long 0x00 26. -0x8 26. -0x4 26. "     P26 ,Pull Up Disable/Enable and Status 26" "Enabled,Disabled"
+  textline "                           "
+  setclrfld.long 0x00 25. -0x8 25. -0x4 25. " P25 ,Pull Up Disable/Enable and Status 25" "Enabled,Disabled"
+  setclrfld.long 0x00 24. -0x8 24. -0x4 24. "     P24 ,Pull Up Disable/Enable and Status 24" "Enabled,Disabled"
+  textline "                           "
+  setclrfld.long 0x00 23. -0x8 23. -0x4 23. " P23 ,Pull Up Disable/Enable and Status 23" "Enabled,Disabled"
+  setclrfld.long 0x00 22. -0x8 22. -0x4 22. "     P22 ,Pull Up Disable/Enable and Status 22" "Enabled,Disabled"
+  textline "                           "
+  setclrfld.long 0x00 21. -0x8 21. -0x4 21. " P21 ,Pull Up Disable/Enable and Status 21" "Enabled,Disabled"
+  setclrfld.long 0x00 20. -0x8 20. -0x4 20. "     P20 ,Pull Up Disable/Enable and Status 20" "Enabled,Disabled"
+  textline "                           "                    
+  setclrfld.long 0x00 19. -0x8 19. -0x4 19. " P19 ,Pull Up Disable/Enable and Status 19" "Enabled,Disabled"
+  setclrfld.long 0x00 18. -0x8 18. -0x4 18. "     P18 ,Pull Up Disable/Enable and Status 18" "Enabled,Disabled"
+  textline "                           "                    
+  setclrfld.long 0x00 17. -0x8 17. -0x4 17. " P17 ,Pull Up Disable/Enable and Status 17" "Enabled,Disabled"
+  setclrfld.long 0x00 16. -0x8 16. -0x4 16. "     P16 ,Pull Up Disable/Enable and Status 16" "Enabled,Disabled"
+  textline "                           "                    
+  setclrfld.long 0x00 15. -0x8 15. -0x4 15. " P15 ,Pull Up Disable/Enable and Status 15" "Enabled,Disabled"
+  setclrfld.long 0x00 14. -0x8 14. -0x4 14. "     P14 ,Pull Up Disable/Enable and Status 14" "Enabled,Disabled"
+  textline "                           "                    
+  setclrfld.long 0x00 13. -0x8 13. -0x4 13. " P13 ,Pull Up Disable/Enable and Status 13" "Enabled,Disabled"
+  setclrfld.long 0x00 12. -0x8 12. -0x4 12. "     P12 ,Pull Up Disable/Enable and Status 12" "Enabled,Disabled"
+  textline "                           "                    
+  setclrfld.long 0x00 11. -0x8 11. -0x4 11. " P11 ,Pull Up Disable/Enable and Status 11" "Enabled,Disabled"
+  setclrfld.long 0x00 10. -0x8 10. -0x4 10. "     P10 ,Pull Up Disable/Enable and Status 10" "Enabled,Disabled"
+  textline "                           "                    
+  setclrfld.long 0x00 9. -0x8 9. -0x4 9. " P9  ,Pull Up Disable/Enable and Status 9" "Enabled,Disabled"
+  setclrfld.long 0x00 8. -0x8 8. -0x4 8. "     P8  ,Pull Up Disable/Enable and Status 8" "Enabled,Disabled"
+  textline "                           "                    
+  setclrfld.long 0x00 7. -0x8 7. -0x4 7. " P7  ,Pull Up Disable/Enable and Status 7" "Enabled,Disabled"
+  setclrfld.long 0x00 6. -0x8 6. -0x4 6. "     P6  ,Pull Up Disable/Enable and Status 6" "Enabled,Disabled"
+  textline "                           "                    
+  setclrfld.long 0x00 5. -0x8 5. -0x4 5. " P5  ,Pull Up Disable/Enable and Status 5" "Enabled,Disabled"
+  setclrfld.long 0x00 4. -0x8 4. -0x4 4. "     P4  ,Pull Up Disable/Enable and Status 4" "Enabled,Disabled"
+  textline "                           "                    
+  setclrfld.long 0x00 3. -0x8 3. -0x4 3. " P3  ,Pull Up Disable/Enable and Status 3" "Enabled,Disabled"
+  setclrfld.long 0x00 2. -0x8 2. -0x4 2. "     P2  ,Pull Up Disable/Enable and Status 2" "Enabled,Disabled"
+  textline "                           "                    
+  setclrfld.long 0x00 1. -0x8 1. -0x4 1. " P1  ,Pull Up Disable/Enable and Status 1" "Enabled,Disabled"
+  setclrfld.long 0x00 0. -0x8 0. -0x4 0. "     P0  ,Pull Up Disable/Enable and Status 0" "Enabled,Disabled"
+        
+tree.end
+
+tree "Peripherial Selection"
+
+width 0xe
+group.long 0x78++0x03
+line.long 0x00 "PIO_ABSR_Sel,AB Selection and Status Register"
+  setclrfld.long 0x00 31. -0x4 31. -0x8 31. " P31 ,Peripheral A B Selection and Status 31" "A,B"
+  setclrfld.long 0x00 30. -0x4 30. -0x8 30. "            P30 ,Peripheral A B Selection and Status 30" "A,B"
+  textline "                       "
+  setclrfld.long 0x00 29. -0x4 29. -0x8 29. " P29 ,Peripheral A B Selection and Status 29" "A,B"
+  setclrfld.long 0x00 28. -0x4 28. -0x8 28. "            P28 ,Peripheral A B Selection and Status 28" "A,B"
+  textline "                       "
+  setclrfld.long 0x00 27. -0x4 27. -0x8 27. " P27 ,Peripheral A B Selection and Status 27" "A,B"
+  setclrfld.long 0x00 26. -0x4 26. -0x8 26. "            P26 ,Peripheral A B Selection and Status 26" "A,B"
+  textline "                       "
+  setclrfld.long 0x00 25. -0x4 25. -0x8 25. " P25 ,Peripheral A B Selection and Status 25" "A,B"
+  setclrfld.long 0x00 24. -0x4 24. -0x8 24. "            P24 ,Peripheral A B Selection and Status 24" "A,B"
+  textline "                       "
+  setclrfld.long 0x00 23. -0x4 23. -0x8 23. " P23 ,Peripheral A B Selection and Status 23" "A,B"
+  setclrfld.long 0x00 22. -0x4 22. -0x8 22. "            P22 ,Peripheral A B Selection and Status 22" "A,B"
+  textline "                       "
+  setclrfld.long 0x00 21. -0x4 21. -0x8 21. " P21 ,Peripheral A B Selection and Status 21" "A,B"
+  setclrfld.long 0x00 20. -0x4 20. -0x8 20. "            P20 ,Peripheral A B Selection and Status 20" "A,B"
+  textline "                       "                    
+  setclrfld.long 0x00 19. -0x4 19. -0x8 19. " P19 ,Peripheral A B Selection and Status 19" "A,B"
+  setclrfld.long 0x00 18. -0x4 18. -0x8 18. "            P18 ,Peripheral A B Selection and Status 18" "A,B"
+  textline "                       "                    
+  setclrfld.long 0x00 17. -0x4 17. -0x8 17. " P17 ,Peripheral A B Selection and Status 17" "A,B"
+  setclrfld.long 0x00 16. -0x4 16. -0x8 16. "            P16 ,Peripheral A B Selection and Status 16" "A,B"
+  textline "                       "                    
+  setclrfld.long 0x00 15. -0x4 15. -0x8 15. " P15 ,Peripheral A B Selection and Status 15" "A,B"
+  setclrfld.long 0x00 14. -0x4 14. -0x8 14. "            P14 ,Peripheral A B Selection and Status 14" "A,B"
+  textline "                       "                    
+  setclrfld.long 0x00 13. -0x4 13. -0x8 13. " P13 ,Peripheral A B Selection and Status 13" "A,B"
+  setclrfld.long 0x00 12. -0x4 12. -0x8 12. "            P12 ,Peripheral A B Selection and Status 12" "A,B"
+  textline "                       "                    
+  setclrfld.long 0x00 11. -0x4 11. -0x8 11. " P11 ,Peripheral A B Selection and Status 11" "A,B"
+  setclrfld.long 0x00 10. -0x4 10. -0x8 10. "            P10 ,Peripheral A B Selection and Status 10" "A,B"
+  textline "                       "                     
+  setclrfld.long 0x00 9. -0x4 9. -0x8 9. " P9  ,Peripheral A B Selection and Status 9" "A,B"
+  setclrfld.long 0x00 8. -0x4 8. -0x8 8. "            P8  ,Peripheral A B Selection and Status 8" "A,B"
+  textline "                       "                    
+  setclrfld.long 0x00 7. -0x4 7. -0x8 7. " P7  ,Peripheral A B Selection and Status 7" "A,B"
+  setclrfld.long 0x00 6. -0x4 6. -0x8 6. "            P6  ,Peripheral A B Selection and Status 6" "A,B"
+  textline "                       "                    
+  setclrfld.long 0x00 5. -0x4 5. -0x8 5. " P5  ,Peripheral A B Selection and Status 5" "A,B"
+  setclrfld.long 0x00 4. -0x4 4. -0x8 4. "            P4  ,Peripheral A B Selection and Status 4" "A,B"
+  textline "                       "                    
+  setclrfld.long 0x00 3. -0x4 3. -0x8 3. " P3  ,Peripheral A B Selection and Status 3" "A,B"
+  setclrfld.long 0x00 2. -0x4 2. -0x8 2. "            P2  ,Peripheral A B Selection and Status 2" "A,B"
+  textline "                       "                    
+  setclrfld.long 0x00 1. -0x4 1. -0x8 1. " P1  ,Peripheral A B Selection and Status 1" "A,B"
+  setclrfld.long 0x00 0. -0x4 0. -0x8 0. "            P0  ,Peripheral A B Selection and Status 0" "A,B"
+tree.end
+
+
+tree "Output Write"
+width 0x12
+group.long 0xA8++0x03
+line.long 0x00 "PIO_OWSR_Set/Clr,Output Write Disable/Enable and Status Register"
+  setclrfld.long 0x00 31. -0x8 31. -0x4 31. " P31 ,Output Write Disable/Enable and Status 31" "Disabled,Enabled"
+  setclrfld.long 0x00 30. -0x8 30. -0x4 30. "     P30 ,Output Write Disable/Enable and Status 30" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 29. -0x8 29. -0x4 29. " P29 ,Output Write Disable/Enable and Status 29" "Disabled,Enabled"
+  setclrfld.long 0x00 28. -0x8 28. -0x4 28. "     P28 ,Output Write Disable/Enable and Status 28" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 27. -0x8 27. -0x4 27. " P27 ,Output Write Disable/Enable and Status 27" "Disabled,Enabled"
+  setclrfld.long 0x00 26. -0x8 26. -0x4 26. "     P26 ,Output Write Disable/Enable and Status 26" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 25. -0x8 25. -0x4 25. " P25 ,Output Write Disable/Enable and Status 25" "Disabled,Enabled"
+  setclrfld.long 0x00 24. -0x8 24. -0x4 24. "     P24 ,Output Write Disable/Enable and Status 24" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 23. -0x8 23. -0x4 23. " P23 ,Output Write Disable/Enable and Status 23" "Disabled,Enabled"
+  setclrfld.long 0x00 22. -0x8 22. -0x4 22. "     P22 ,Output Write Disable/Enable and Status 22" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 21. -0x8 21. -0x4 21. " P21 ,Output Write Disable/Enable and Status 21" "Disabled,Enabled"
+  setclrfld.long 0x00 20. -0x8 20. -0x4 20. "     P20 ,Output Write Disable/Enable and Status 20" "Disabled,Enabled"
+  textline "                           "                    
+  setclrfld.long 0x00 19. -0x8 19. -0x4 19. " P19 ,Output Write Disable/Enable and Status 19" "Disabled,Enabled"
+  setclrfld.long 0x00 18. -0x8 18. -0x4 18. "     P18 ,Output Write Disable/Enable and Status 18" "Disabled,Enabled"
+  textline "                           "                    
+  setclrfld.long 0x00 17. -0x8 17. -0x4 17. " P17 ,Output Write Disable/Enable and Status 17" "Disabled,Enabled"
+  setclrfld.long 0x00 16. -0x8 16. -0x4 16. "     P16 ,Output Write Disable/Enable and Status 16" "Disabled,Enabled"
+  textline "                           "                    
+  setclrfld.long 0x00 15. -0x8 15. -0x4 15. " P15 ,Output Write Disable/Enable and Status 15" "Disabled,Enabled"
+  setclrfld.long 0x00 14. -0x8 14. -0x4 14. "     P14 ,Output Write Disable/Enable and Status 14" "Disabled,Enabled"
+  textline "                           "                    
+  setclrfld.long 0x00 13. -0x8 13. -0x4 13. " P13 ,Output Write Disable/Enable and Status 13" "Disabled,Enabled"
+  setclrfld.long 0x00 12. -0x8 12. -0x4 12. "     P12 ,Output Write Disable/Enable and Status 12" "Disabled,Enabled"
+  textline "                           "                    
+  setclrfld.long 0x00 11. -0x8 11. -0x4 11. " P11 ,Output Write Disable/Enable and Status 11" "Disabled,Enabled"
+  setclrfld.long 0x00 10. -0x8 10. -0x4 10. "     P10 ,Output Write Disable/Enable and Status 10" "Disabled,Enabled"
+  textline "                           "                    
+  setclrfld.long 0x00 9. -0x8 9. -0x4 9. " P9  ,Output Write Disable/Enable and Status 9" "Disabled,Enabled"
+  setclrfld.long 0x00 8. -0x8 8. -0x4 8. "     P8  ,Output Write Disable/Enable and Status 8" "Disabled,Enabled"
+  textline "                           "                    
+  setclrfld.long 0x00 7. -0x8 7. -0x4 7. " P7  ,Output Write Disable/Enable and Status 7" "Disabled,Enabled"
+  setclrfld.long 0x00 6. -0x8 6. -0x4 6. "     P6  ,Output Write Disable/Enable and Status 6" "Disabled,Enabled"
+  textline "                           "                    
+  setclrfld.long 0x00 5. -0x8 5. -0x4 5. " P5  ,Output Write Disable/Enable and Status 5" "Disabled,Enabled"
+  setclrfld.long 0x00 4. -0x8 4. -0x4 4. "     P4  ,Output Write Disable/Enable and Status 4" "Disabled,Enabled"
+  textline "                           "                    
+  setclrfld.long 0x00 3. -0x8 3. -0x4 3. " P3  ,Output Write Disable/Enable and Status 3" "Disabled,Enabled"
+  setclrfld.long 0x00 2. -0x8 2. -0x4 2. "     P2  ,Output Write Disable/Enable and Status 2" "Disabled,Enabled"
+  textline "                           "                    
+  setclrfld.long 0x00 1. -0x8 1. -0x4 1. " P1  ,Output Write Disable/Enable and Status 1" "Disabled,Enabled"
+  setclrfld.long 0x00 0. -0x8 0. -0x4 0. "     P0  ,Output Write Disable/Enable and Status 0" "Disabled,Enabled"
+        
+tree.end
+width 0xb
+tree.end
+
+; --------------------------------------------------
+ 
+tree "Periodic Interval Timer (PIT)"
+ base 0xFFFFFD30
+
+width 0xa
+group.long 0x00++0x03
+ line.long 0x00 "PIT_MR,Mode Register"
+  bitfld.long 0x00 25. " PITIEN ,Periodic Interval Timer Interrupt Enable" "No effect,Interrupt"
+  bitfld.long 0x00 24. "        PITEN ,Period Interval Timer Enabled" "Disabled,Enabled"
+  textline "                   "
+  hexmask.long.tbyte 0x00 0.--19. 1 " PIV    ,Periodic Interval Value"
+rgroup.long 0x04++3
+ line.long 0x00 "PIT_SR,Status Register"
+  bitfld.long 0x00 0. " PITS   ,Periodic Interval Timer Status" "PIV not reached,PIV reached"
+
+hgroup.long 0x08++3
+ hide.long 0x00 "PIT_PIVR,Periodic Interval Value Register"
+ in
+
+rgroup.long 0x0c++3
+ line.long 0x0 "PIT_PIIR,Periodic Interval Image Register"
+  hexmask.long.word 0x0 20.--31. 1 " PICNT  ,Periodic Interval Counter"
+  hexmask.long.tbyte 0x0 0.--19. 1 "             CPIV  ,Current Periodic Interval Value"
+
+width 0xb
+tree.end
+
+; --------------------------------------------------
+; AIC (aus perat91sam7sx)
+; --------------------------------------------------
+
+tree "Advanced Interrupt Controller (AIC)"
+ base 0xFFFFF000
+width 10.
+
+
+tree "Source Mode Registers"
+
+group.long 0x00++0x03
+line.long 0x00 "AIC_SMR0,Source Mode Register 0"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x04++0x03
+line.long 0x00 "AIC_SMR1,Source Mode Register 1"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x08++0x03
+line.long 0x00 "AIC_SMR2,Source Mode Register 2"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x0c++0x03
+line.long 0x00 "AIC_SMR3,Source Mode Register 3"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x10++0x03
+line.long 0x00 "AIC_SMR4,Source Mode Register 4"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x14++0x03
+line.long 0x00 "AIC_SMR5,Source Mode Register 5"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x18++0x03
+line.long 0x00 "AIC_SMR6,Source Mode Register 6"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x1c++0x03
+line.long 0x00 "AIC_SMR7,Source Mode Register 7"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x20++0x03
+line.long 0x00 "AIC_SMR8,Source Mode Register 8"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x24++0x03
+line.long 0x00 "AIC_SMR9,Source Mode Register 9"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x28++0x03
+line.long 0x00 "AIC_SMR10,Source Mode Register 10"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x2c++0x03
+line.long 0x00 "AIC_SMR11,Source Mode Register 11"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x30++0x03
+line.long 0x00 "AIC_SMR12,Source Mode Register 12"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x34++0x03
+line.long 0x00 "AIC_SMR13,Source Mode Register 13"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x38++0x03
+line.long 0x00 "AIC_SMR14,Source Mode Register 14"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x3c++0x03
+line.long 0x00 "AIC_SMR15,Source Mode Register 15"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x40++0x03
+line.long 0x00 "AIC_SMR16,Source Mode Register 16"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x44++0x03
+line.long 0x00 "AIC_SMR17,Source Mode Register 17"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x48++0x03
+line.long 0x00 "AIC_SMR18,Source Mode Register 18"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x4c++0x03
+line.long 0x00 "AIC_SMR19,Source Mode Register 19"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x50++0x03
+line.long 0x00 "AIC_SMR20,Source Mode Register 20"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x54++0x03
+line.long 0x00 "AIC_SMR21,Source Mode Register 21"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x58++0x03
+line.long 0x00 "AIC_SMR22,Source Mode Register 22"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x5c++0x03
+line.long 0x00 "AIC_SMR23,Source Mode Register 23"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x60++0x03
+line.long 0x00 "AIC_SMR24,Source Mode Register 24"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x64++0x03
+line.long 0x00 "AIC_SMR25,Source Mode Register 25"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x68++0x03
+line.long 0x00 "AIC_SMR26,Source Mode Register 26"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x6c++0x03
+line.long 0x00 "AIC_SMR27,Source Mode Register 27"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x70++0x03
+line.long 0x00 "AIC_SMR28,Source Mode Register 28"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x74++0x03
+line.long 0x00 "AIC_SMR29,Source Mode Register 29"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x78++0x03
+line.long 0x00 "AIC_SMR30,Source Mode Register 30"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+group.long 0x7c++0x03
+line.long 0x00 "AIC_SMR31,Source Mode Register 31"
+  bitfld.long 0x00 5.--6. " SRCTYPE ,Interrupt Source Type" "Low,Falling,High,Rising"
+  bitfld.long 0x00 0.--2. "  PRIOR ,Priority Level" "Lowest,1,2,3,4,5,6,Highest"
+
+tree.end
+
+tree "Source Vector Registers"
+
+group.long 0x80++0x03
+line.long 0x00 "AIC_SVR0,Source Vector Register 0"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0x84++0x03
+line.long 0x00 "AIC_SVR1,Source Vector Register 1"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0x88++0x03
+line.long 0x00 "AIC_SVR2,Source Vector Register 2"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0x8c++0x03
+line.long 0x00 "AIC_SVR3,Source Vector Register 3"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0x90++0x03
+line.long 0x00 "AIC_SVR4,Source Vector Register 4"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0x94++0x03
+line.long 0x00 "AIC_SVR5,Source Vector Register 5"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0x98++0x03
+line.long 0x00 "AIC_SVR6,Source Vector Register 6"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0x9c++0x03
+line.long 0x00 "AIC_SVR7,Source Vector Register 7"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xa0++0x03
+line.long 0x00 "AIC_SVR8,Source Vector Register 8"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xa4++0x03
+line.long 0x00 "AIC_SVR9,Source Vector Register 9"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xa8++0x03
+line.long 0x00 "AIC_SVR10,Source Vector Register 10"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xac++0x03
+line.long 0x00 "AIC_SVR11,Source Vector Register 11"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xb0++0x03
+line.long 0x00 "AIC_SVR12,Source Vector Register 12"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xb4++0x03
+line.long 0x00 "AIC_SVR13,Source Vector Register 13"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xb8++0x03
+line.long 0x00 "AIC_SVR14,Source Vector Register 14"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xbc++0x03
+line.long 0x00 "AIC_SVR15,Source Vector Register 15"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xc0++0x03
+line.long 0x00 "AIC_SVR16,Source Vector Register 16"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xc4++0x03
+line.long 0x00 "AIC_SVR17,Source Vector Register 17"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xc8++0x03
+line.long 0x00 "AIC_SVR18,Source Vector Register 18"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xcc++0x03
+line.long 0x00 "AIC_SVR19,Source Vector Register 19"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xd0++0x03
+line.long 0x00 "AIC_SVR20,Source Vector Register 20"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xd4++0x03
+line.long 0x00 "AIC_SVR21,Source Vector Register 21"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xd8++0x03
+line.long 0x00 "AIC_SVR22,Source Vector Register 22"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xdc++0x03
+line.long 0x00 "AIC_SVR23,Source Vector Register 23"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xe0++0x03
+line.long 0x00 "AIC_SVR24,Source Vector Register 24"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xe4++0x03
+line.long 0x00 "AIC_SVR25,Source Vector Register 25"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xe8++0x03
+line.long 0x00 "AIC_SVR26,Source Vector Register 26"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xec++0x03
+line.long 0x00 "AIC_SVR27,Source Vector Register 27"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xf0++0x03
+line.long 0x00 "AIC_SVR28,Source Vector Register 28"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xf4++0x03
+line.long 0x00 "AIC_SVR29,Source Vector Register 29"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xf8++0x03
+line.long 0x00 "AIC_SVR30,Source Vector Register 30"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+group.long 0xfc++0x03
+line.long 0x00 "AIC_SVR31,Source Vector Register 31"
+  hexmask.long 0x00 0.--31. 1 " VECTOR ,Source Vector"
+
+tree.end
+width 0xb
+tree "Interrupt Registers"
+
+rgroup.long 0x100++0x17
+line.long 0x00 "AIC_IVR,Interrupt Vector Register"
+  hexmask.long 0x00 0.--31. 1 " IRQV  ,Interrupt Vector Register"
+
+line.long 0x04 "AIC_FVR,Fast Interrupt Vector Register"
+  hexmask.long 0x04 0.--31. 1 " FIQV  ,FIQ Vector Register"
+
+line.long 0x08 "AIC_ISR,Interrupt Status Register"
+  hexmask.long.byte 0x08 0.--4. 1 " IRQID ,Current Interrupt Identifier"
+
+line.long 0x0c "AIC_IPR,Interrupt Pending Register"
+  bitfld.long 0x0c 31. " PID31 ,Interrupt Pending 31" "Not pending,Pending"
+  bitfld.long 0x0c 30. "          PID30 ,Interrupt Pending 30" "Not pending,Pending"
+  textline "                    "
+  bitfld.long 0x0c 29. " PID29 ,Interrupt Pending 29" "Not pending,Pending"
+  bitfld.long 0x0c 28. "          PID28 ,Interrupt Pending 28" "Not pending,Pending"
+  textline "                    "
+  bitfld.long 0x0c 27. " PID27 ,Interrupt Pending 27" "Not pending,Pending"
+  bitfld.long 0x0c 26. "          PID26 ,Interrupt Pending 26" "Not pending,Pending"
+  textline "                    "
+  bitfld.long 0x0c 25. " PID25 ,Interrupt Pending 25" "Not pending,Pending"
+  bitfld.long 0x0c 24. "          PID24 ,Interrupt Pending 24" "Not pending,Pending"
+  textline "                    "
+  bitfld.long 0x0c 23. " PID23 ,Interrupt Pending 23" "Not pending,Pending"
+  bitfld.long 0x0c 22. "          PID22 ,Interrupt Pending 22" "Not pending,Pending"
+  textline "                    "
+  bitfld.long 0x0c 21. " PID21 ,Interrupt Pending 21" "Not pending,Pending"
+  bitfld.long 0x0c 20. "          PID20 ,Interrupt Pending 20" "Not pending,Pending"
+  textline "                    "
+  bitfld.long 0x0c 19. " PID19 ,Interrupt Pending 19" "Not pending,Pending"
+  bitfld.long 0x0c 18. "          PID18 ,Interrupt Pending 18" "Not pending,Pending"
+  textline "                    "
+  bitfld.long 0x0c 17. " PID17 ,Interrupt Pending 17" "Not pending,Pending"
+  bitfld.long 0x0c 16. "          PID16 ,Interrupt Pending 16" "Not pending,Pending"
+  textline "                    "
+  bitfld.long 0x0c 15. " PID15 ,Interrupt Pending 15" "Not pending,Pending"
+  bitfld.long 0x0c 14. "          PID14 ,Interrupt Pending 14" "Not pending,Pending"
+  textline "                    "
+  bitfld.long 0x0c 13. " PID13 ,Interrupt Pending 13" "Not pending,Pending"
+  bitfld.long 0x0c 12. "          PID12 ,Interrupt Pending 12" "Not pending,Pending"
+  textline "                    "
+  bitfld.long 0x0c 11. " PID11 ,Interrupt Pending 11" "Not pending,Pending"
+  bitfld.long 0x0c 10. "          PID10 ,Interrupt Pending 10" "Not pending,Pending"
+  textline "                    "
+  bitfld.long 0x0c 9. " PID9  ,Interrupt Pending 9" "Not pending,Pending"
+  bitfld.long 0x0c 8. "          PID8  ,Interrupt Pending 8" "Not pending,Pending"
+  textline "                    "
+  bitfld.long 0x0c 7. " PID7  ,Interrupt Pending 7" "Not pending,Pending"
+  bitfld.long 0x0c 6. "          PID6  ,Interrupt Pending 6" "Not pending,Pending"
+  textline "                    "
+  bitfld.long 0x0c 5. " PID5  ,Interrupt Pending 5" "Not pending,Pending"
+  bitfld.long 0x0c 4. "          PID4  ,Interrupt Pending 4" "Not pending,Pending"
+  textline "                    "
+  bitfld.long 0x0c 3. " PID3  ,Interrupt Pending 3" "Not pending,Pending"
+  bitfld.long 0x0c 2. "          PID2  ,Interrupt Pending 2" "Not pending,Pending"
+  textline "                    "
+  bitfld.long 0x0c 1. " SYS   ,Interrupt Pending 1" "Not pending,Pending"
+  bitfld.long 0x0c 0. "          FIQ   ,Interrupt Pending 0" "Not pending,Pending"
+
+
+line.long 0x10 "AIC_IMR,Interrupt Mask Register"
+  bitfld.long 0x10 31. " PID31 ,Interrupt Mask 31" "Disabled,Enabled"
+  bitfld.long 0x10 30. "             PID30 ,Interrupt Mask 30" "Disabled,Enabled"
+  textline "                    "
+  bitfld.long 0x10 29. " PID29 ,Interrupt Mask 29" "Disabled,Enabled"
+  bitfld.long 0x10 28. "             PID28 ,Interrupt Mask 28" "Disabled,Enabled"
+  textline "                    "
+  bitfld.long 0x10 27. " PID27 ,Interrupt Mask 27" "Disabled,Enabled"
+  bitfld.long 0x10 26. "             PID26 ,Interrupt Mask 26" "Disabled,Enabled"
+  textline "                    "
+  bitfld.long 0x10 25. " PID25 ,Interrupt Mask 25" "Disabled,Enabled"
+  bitfld.long 0x10 24. "             PID24 ,Interrupt Mask 24" "Disabled,Enabled"
+  textline "                    "
+  bitfld.long 0x10 23. " PID23 ,Interrupt Mask 23" "Disabled,Enabled"
+  bitfld.long 0x10 22. "             PID22 ,Interrupt Mask 22" "Disabled,Enabled"
+  textline "                    "
+  bitfld.long 0x10 21. " PID21 ,Interrupt Mask 21" "Disabled,Enabled"
+  bitfld.long 0x10 20. "             PID20 ,Interrupt Mask 20" "Disabled,Enabled"
+  textline "                    "
+  bitfld.long 0x10 19. " PID19 ,Interrupt Mask 19" "Disabled,Enabled"
+  bitfld.long 0x10 18. "             PID18 ,Interrupt Mask 18" "Disabled,Enabled"
+  textline "                    "
+  bitfld.long 0x10 17. " PID17 ,Interrupt Mask 17" "Disabled,Enabled"
+  bitfld.long 0x10 16. "             PID16 ,Interrupt Mask 16" "Disabled,Enabled"
+  textline "                    "
+  bitfld.long 0x10 15. " PID15 ,Interrupt Mask 15" "Disabled,Enabled"
+  bitfld.long 0x10 14. "             PID14 ,Interrupt Mask 14" "Disabled,Enabled"
+  textline "                    "
+  bitfld.long 0x10 13. " PID13 ,Interrupt Mask 13" "Disabled,Enabled"
+  bitfld.long 0x10 12. "             PID12 ,Interrupt Mask 12" "Disabled,Enabled"
+  textline "                    "
+  bitfld.long 0x10 11. " PID11 ,Interrupt Mask 11" "Disabled,Enabled"
+  bitfld.long 0x10 10. "             PID10 ,Interrupt Mask 10" "Disabled,Enabled"
+  textline "                    "
+  bitfld.long 0x10 9. " PID9  ,Interrupt Mask 9" "Disabled,Enabled"
+  bitfld.long 0x10 8. "             PID8  ,Interrupt Mask 8" "Disabled,Enabled"
+  textline "                    "
+  bitfld.long 0x10 7. " PID7  ,Interrupt Mask 7" "Disabled,Enabled"
+  bitfld.long 0x10 6. "             PID6  ,Interrupt Mask 6" "Disabled,Enabled"
+  textline "                    "
+  bitfld.long 0x10 5. " PID5  ,Interrupt Mask 5" "Disabled,Enabled"
+  bitfld.long 0x10 4. "             PID4  ,Interrupt Mask 4" "Disabled,Enabled"
+  textline "                    "
+  bitfld.long 0x10 3. " PID3  ,Interrupt Mask 3" "Disabled,Enabled"
+  bitfld.long 0x10 2. "             PID2  ,Interrupt Mask 2" "Disabled,Enabled"
+  textline "                    "
+  bitfld.long 0x10 1. " SYS   ,Interrupt Mask 1" "Disabled,Enabled"
+  bitfld.long 0x10 0. "             FIQ   ,Interrupt Mask 0" "Disabled,Enabled"
+
+
+line.long 0x14 "AIC_CISR,Core Interrupt Status Register"
+  bitfld.long 0x14 1. " NIRQ  ,NIRQ Status" "Deactivated,Active"
+  bitfld.long 0x14 0. "          NFIQ  ,NFIQ Status" "Deactivated,Active"
+
+
+wgroup.long 0x120++0xf
+line.long 0x00 "AIC_IECR,Interrupt Enable Command Register"
+  bitfld.long 0x00 31. " PID31 ,Interrupt Pending 31" "No effect,Enabled"
+  bitfld.long 0x00 30. "            PID30 ,Interrupt Pending 30" "No effect,Enabled"
+  textline "                    "
+  bitfld.long 0x00 29. " PID29 ,Interrupt Pending 29" "No effect,Enabled"
+  bitfld.long 0x00 28. "            PID28 ,Interrupt Pending 28" "No effect,Enabled"
+  textline "                    "
+  bitfld.long 0x00 27. " PID27 ,Interrupt Pending 27" "No effect,Enabled"
+  bitfld.long 0x00 26. "            PID26 ,Interrupt Pending 26" "No effect,Enabled"
+  textline "                    "
+  bitfld.long 0x00 25. " PID25 ,Interrupt Pending 25" "No effect,Enabled"
+  bitfld.long 0x00 24. "            PID24 ,Interrupt Pending 24" "No effect,Enabled"
+  textline "                    "
+  bitfld.long 0x00 23. " PID23 ,Interrupt Pending 23" "No effect,Enabled"
+  bitfld.long 0x00 22. "            PID22 ,Interrupt Pending 22" "No effect,Enabled"
+  textline "                    "
+  bitfld.long 0x00 21. " PID21 ,Interrupt Pending 21" "No effect,Enabled"
+  bitfld.long 0x00 20. "            PID20 ,Interrupt Pending 20" "No effect,Enabled"
+  textline "                    "
+  bitfld.long 0x00 19. " PID19 ,Interrupt Pending 19" "No effect,Enabled"
+  bitfld.long 0x00 18. "            PID18 ,Interrupt Pending 18" "No effect,Enabled"
+  textline "                    "
+  bitfld.long 0x00 17. " PID17 ,Interrupt Pending 17" "No effect,Enabled"
+  bitfld.long 0x00 16. "            PID16 ,Interrupt Pending 16" "No effect,Enabled"
+  textline "                    "
+  bitfld.long 0x00 15. " PID15 ,Interrupt Pending 15" "No effect,Enabled"
+  bitfld.long 0x00 14. "            PID14 ,Interrupt Pending 14" "No effect,Enabled"
+  textline "                    "
+  bitfld.long 0x00 13. " PID13 ,Interrupt Pending 13" "No effect,Enabled"
+  bitfld.long 0x00 12. "            PID12 ,Interrupt Pending 12" "No effect,Enabled"
+  textline "                    "
+  bitfld.long 0x00 11. " PID11 ,Interrupt Pending 11" "No effect,Enabled"
+  bitfld.long 0x00 10. "            PID10 ,Interrupt Pending 10" "No effect,Enabled"
+  textline "                    "
+  bitfld.long 0x00 9. " PID9  ,Interrupt Pending 9" "No effect,Enabled"
+  bitfld.long 0x00 8. "            PID8  ,Interrupt Pending 8" "No effect,Enabled"
+  textline "                    "
+  bitfld.long 0x00 7. " PID7  ,Interrupt Pending 7" "No effect,Enabled"
+  bitfld.long 0x00 6. "            PID6  ,Interrupt Pending 6" "No effect,Enabled"
+  textline "                    "
+  bitfld.long 0x00 5. " PID5  ,Interrupt Pending 5" "No effect,Enabled"
+  bitfld.long 0x00 4. "            PID4  ,Interrupt Pending 4" "No effect,Enabled"
+  textline "                    "
+  bitfld.long 0x00 3. " PID3  ,Interrupt Pending 3" "No effect,Enabled"
+  bitfld.long 0x00 2. "            PID2  ,Interrupt Pending 2" "No effect,Enabled"
+  textline "                    "
+  bitfld.long 0x00 1. " SYS   ,Interrupt Pending 1" "No effect,Enabled"
+  bitfld.long 0x00 0. "            FIQ   ,Interrupt Pending 0" "No effect,Enabled"
+
+
+line.long 0x04 "AIC_IDCR,Interrupt Disable Command Register"
+  bitfld.long 0x04 31. " PID31 ,Interrupt Pending 31" "No effect,Disabled"
+  bitfld.long 0x04 30. "            PID30 ,Interrupt Pending 30" "No effect,Disabled"
+  textline "                    "
+  bitfld.long 0x04 29. " PID29 ,Interrupt Pending 29" "No effect,Disabled"
+  bitfld.long 0x04 28. "            PID28 ,Interrupt Pending 28" "No effect,Disabled"
+  textline "                    "
+  bitfld.long 0x04 27. " PID27 ,Interrupt Pending 27" "No effect,Disabled"
+  bitfld.long 0x04 26. "            PID26 ,Interrupt Pending 26" "No effect,Disabled"
+  textline "                    "
+  bitfld.long 0x04 25. " PID25 ,Interrupt Pending 25" "No effect,Disabled"
+  bitfld.long 0x04 24. "            PID24 ,Interrupt Pending 24" "No effect,Disabled"
+  textline "                    "
+  bitfld.long 0x04 23. " PID23 ,Interrupt Pending 23" "No effect,Disabled"
+  bitfld.long 0x04 22. "            PID22 ,Interrupt Pending 22" "No effect,Disabled"
+  textline "                    "
+  bitfld.long 0x04 21. " PID21 ,Interrupt Pending 21" "No effect,Disabled"
+  bitfld.long 0x04 20. "            PID20 ,Interrupt Pending 20" "No effect,Disabled"
+  textline "                    "
+  bitfld.long 0x04 19. " PID19 ,Interrupt Pending 19" "No effect,Disabled"
+  bitfld.long 0x04 18. "            PID18 ,Interrupt Pending 18" "No effect,Disabled"
+  textline "                    "
+  bitfld.long 0x04 17. " PID17 ,Interrupt Pending 17" "No effect,Disabled"
+  bitfld.long 0x04 16. "            PID16 ,Interrupt Pending 16" "No effect,Disabled"
+  textline "                    "
+  bitfld.long 0x04 15. " PID15 ,Interrupt Pending 15" "No effect,Disabled"
+  bitfld.long 0x04 14. "            PID14 ,Interrupt Pending 14" "No effect,Disabled"
+  textline "                    "
+  bitfld.long 0x04 13. " PID13 ,Interrupt Pending 13" "No effect,Disabled"
+  bitfld.long 0x04 12. "            PID12 ,Interrupt Pending 12" "No effect,Disabled"
+  textline "                    "
+  bitfld.long 0x04 11. " PID11 ,Interrupt Pending 11" "No effect,Disabled"
+  bitfld.long 0x04 10. "            PID10 ,Interrupt Pending 10" "No effect,Disabled"
+  textline "                    "
+  bitfld.long 0x04 9. " PID9  ,Interrupt Pending 9" "No effect,Disabled"
+  bitfld.long 0x04 8. "            PID8  ,Interrupt Pending 8" "No effect,Disabled"
+  textline "                    "
+  bitfld.long 0x04 7. " PID7  ,Interrupt Pending 7" "No effect,Disabled"
+  bitfld.long 0x04 6. "            PID6  ,Interrupt Pending 6" "No effect,Disabled"
+  textline "                    "
+  bitfld.long 0x04 5. " PID5  ,Interrupt Pending 5" "No effect,Disabled"
+  bitfld.long 0x04 4. "            PID4  ,Interrupt Pending 4" "No effect,Disabled"
+  textline "                    "
+  bitfld.long 0x04 3. " PID3  ,Interrupt Pending 3" "No effect,Disabled"
+  bitfld.long 0x04 2. "            PID2  ,Interrupt Pending 2" "No effect,Disabled"
+  textline "                    "
+  bitfld.long 0x04 1. " SYS   ,Interrupt Pending 1" "No effect,Disabled"
+  bitfld.long 0x04 0. "            FIQ   ,Interrupt Pending 0" "No effect,Disabled"
+
+
+line.long 0x08 "AIC_ICCR,Interrupt Clear Command Register"
+  bitfld.long 0x08 31. " PID31 ,Interrupt Pending 31" "No effect,Cleared"
+  bitfld.long 0x08 30. "            PID30 ,Interrupt Pending 30" "No effect,Cleared"
+  textline "                    "
+  bitfld.long 0x08 29. " PID29 ,Interrupt Pending 29" "No effect,Cleared"
+  bitfld.long 0x08 28. "            PID28 ,Interrupt Pending 28" "No effect,Cleared"
+  textline "                    "
+  bitfld.long 0x08 27. " PID27 ,Interrupt Pending 27" "No effect,Cleared"
+  bitfld.long 0x08 26. "            PID26 ,Interrupt Pending 26" "No effect,Cleared"
+  textline "                    "
+  bitfld.long 0x08 25. " PID25 ,Interrupt Pending 25" "No effect,Cleared"
+  bitfld.long 0x08 24. "            PID24 ,Interrupt Pending 24" "No effect,Cleared"
+  textline "                    "
+  bitfld.long 0x08 23. " PID23 ,Interrupt Pending 23" "No effect,Cleared"
+  bitfld.long 0x08 22. "            PID22 ,Interrupt Pending 22" "No effect,Cleared"
+  textline "                    "
+  bitfld.long 0x08 21. " PID21 ,Interrupt Pending 21" "No effect,Cleared"
+  bitfld.long 0x08 20. "            PID20 ,Interrupt Pending 20" "No effect,Cleared"
+  textline "                    "
+  bitfld.long 0x08 19. " PID19 ,Interrupt Pending 19" "No effect,Cleared"
+  bitfld.long 0x08 18. "            PID18 ,Interrupt Pending 18" "No effect,Cleared"
+  textline "                    "
+  bitfld.long 0x08 17. " PID17 ,Interrupt Pending 17" "No effect,Cleared"
+  bitfld.long 0x08 16. "            PID16 ,Interrupt Pending 16" "No effect,Cleared"
+  textline "                    "
+  bitfld.long 0x08 15. " PID15 ,Interrupt Pending 15" "No effect,Cleared"
+  bitfld.long 0x08 14. "            PID14 ,Interrupt Pending 14" "No effect,Cleared"
+  textline "                    "
+  bitfld.long 0x08 13. " PID13 ,Interrupt Pending 13" "No effect,Cleared"
+  bitfld.long 0x08 12. "            PID12 ,Interrupt Pending 12" "No effect,Cleared"
+  textline "                    "
+  bitfld.long 0x08 11. " PID11 ,Interrupt Pending 11" "No effect,Cleared"
+  bitfld.long 0x08 10. "            PID10 ,Interrupt Pending 10" "No effect,Cleared"
+  textline "                    "
+  bitfld.long 0x08 9. " PID9  ,Interrupt Pending 9" "No effect,Cleared"
+  bitfld.long 0x08 8. "            PID8  ,Interrupt Pending 8" "No effect,Cleared"
+  textline "                    "
+  bitfld.long 0x08 7. " PID7  ,Interrupt Pending 7" "No effect,Cleared"
+  bitfld.long 0x08 6. "            PID6  ,Interrupt Pending 6" "No effect,Cleared"
+  textline "                    "
+  bitfld.long 0x08 5. " PID5  ,Interrupt Pending 5" "No effect,Cleared"
+  bitfld.long 0x08 4. "            PID4  ,Interrupt Pending 4" "No effect,Cleared"
+  textline "                    "
+  bitfld.long 0x08 3. " PID3  ,Interrupt Pending 3" "No effect,Cleared"
+  bitfld.long 0x08 2. "            PID2  ,Interrupt Pending 2" "No effect,Cleared"
+  textline "                    "
+  bitfld.long 0x08 1. " SYS   ,Interrupt Pending 1" "No effect,Cleared"
+  bitfld.long 0x08 0. "            FIQ   ,Interrupt Pending 0" "No effect,Cleared"
+
+
+line.long 0x0c "AIC_ISCR,Interrupt Set Command Register"
+  bitfld.long 0x0c 31. " PID31 ,Interrupt Pending 31" "No effect,Set"
+  bitfld.long 0x0c 30. "            PID30 ,Interrupt Pending 30" "No effect,Set"
+  textline "                    "
+  bitfld.long 0x0c 29. " PID29 ,Interrupt Pending 29" "No effect,Set"
+  bitfld.long 0x0c 28. "            PID28 ,Interrupt Pending 28" "No effect,Set"
+  textline "                    "
+  bitfld.long 0x0c 27. " PID27 ,Interrupt Pending 27" "No effect,Set"
+  bitfld.long 0x0c 26. "            PID26 ,Interrupt Pending 26" "No effect,Set"
+  textline "                    "
+  bitfld.long 0x0c 25. " PID25 ,Interrupt Pending 25" "No effect,Set"
+  bitfld.long 0x0c 24. "            PID24 ,Interrupt Pending 24" "No effect,Set"
+  textline "                    "
+  bitfld.long 0x0c 23. " PID23 ,Interrupt Pending 23" "No effect,Set"
+  bitfld.long 0x0c 22. "            PID22 ,Interrupt Pending 22" "No effect,Set"
+  textline "                    "
+  bitfld.long 0x0c 21. " PID21 ,Interrupt Pending 21" "No effect,Set"
+  bitfld.long 0x0c 20. "            PID20 ,Interrupt Pending 20" "No effect,Set"
+  textline "                    "
+  bitfld.long 0x0c 19. " PID19 ,Interrupt Pending 19" "No effect,Set"
+  bitfld.long 0x0c 18. "            PID18 ,Interrupt Pending 18" "No effect,Set"
+  textline "                    "
+  bitfld.long 0x0c 17. " PID17 ,Interrupt Pending 17" "No effect,Set"
+  bitfld.long 0x0c 16. "            PID16 ,Interrupt Pending 16" "No effect,Set"
+  textline "                    "
+  bitfld.long 0x0c 15. " PID15 ,Interrupt Pending 15" "No effect,Set"
+  bitfld.long 0x0c 14. "            PID14 ,Interrupt Pending 14" "No effect,Set"
+  textline "                    "
+  bitfld.long 0x0c 13. " PID13 ,Interrupt Pending 13" "No effect,Set"
+  bitfld.long 0x0c 12. "            PID12 ,Interrupt Pending 12" "No effect,Set"
+  textline "                    "
+  bitfld.long 0x0c 11. " PID11 ,Interrupt Pending 11" "No effect,Set"
+  bitfld.long 0x0c 10. "            PID10 ,Interrupt Pending 10" "No effect,Set"
+  textline "                    "
+  bitfld.long 0x0c 9. " PID9  ,Interrupt Pending 9" "No effect,Set"
+  bitfld.long 0x0c 8. "            PID8  ,Interrupt Pending 8" "No effect,Set"
+  textline "                    "
+  bitfld.long 0x0c 7. " PID7  ,Interrupt Pending 7" "No effect,Set"
+  bitfld.long 0x0c 6. "            PID6  ,Interrupt Pending 6" "No effect,Set"
+  textline "                    "
+  bitfld.long 0x0c 5. " PID5  ,Interrupt Pending 5" "No effect,Set"
+  bitfld.long 0x0c 4. "            PID4  ,Interrupt Pending 4" "No effect,Set"
+  textline "                    "
+  bitfld.long 0x0c 3. " PID3  ,Interrupt Pending 3" "No effect,Set"
+  bitfld.long 0x0c 2. "            PID2  ,Interrupt Pending 2" "No effect,Set"
+  textline "                    "
+  bitfld.long 0x0c 1. " PID1  ,Interrupt Pending 1" "No effect,Set"
+  bitfld.long 0x0c 0. "            PID0  ,Interrupt Pending 0" "No effect,Set"
+
+hgroup.long 0x130++3
+hide.long 0x0 "AIC_EOICR,End of Interrupt Command Register"
+
+tree.end
+width 0x9
+tree "Spurious Interrupt and Debug Control Registers"
+group.long 0x134++0x07
+line.long 0x00 "AIC_SPU,Spurious Interrupt Vector Register"
+  hexmask.long 0x00 0.--31. 1 " SIV   ,Spurious Interrupt Vector Register"
+
+line.long 0x04 "AIC_DCR,Debug Control Register"
+  bitfld.long 0x04 1. " GMSK  ,General Mask" "Normally controlled,Inactive state"
+  bitfld.long 0x04 0. "  PROT  ,Protection Mode" "Disabled,Enabled"
+
+
+tree.end
+
+tree "Fast Forcing Registers"
+width 0x12
+group.long 0x148++0x03
+line.long 0x00 "AIC_FFSR_Dis/Ena,Fast Forcing Disable/Enable and Status Register"
+  setclrfld.long 0x00 31. -0x8 31. -0x4 31. " PID31 ,Fast Forcing Disable/Enable and Status 31" "Disabled,Enabled"
+  setclrfld.long 0x00 30. -0x8 30. -0x4 30. "             PID30 ,Fast Forcing Disable/Enable and Status 30" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 29. -0x8 29. -0x4 29. " PID29 ,Fast Forcing Disable/Enable and Status 29" "Disabled,Enabled"
+  setclrfld.long 0x00 28. -0x8 28. -0x4 28. "             PID28 ,Fast Forcing Disable/Enable and Status 28" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 27. -0x8 27. -0x4 27. " PID27 ,Fast Forcing Disable/Enable and Status 27" "Disabled,Enabled"
+  setclrfld.long 0x00 26. -0x8 26. -0x4 26. "             PID26 ,Fast Forcing Disable/Enable and Status 26" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 25. -0x8 25. -0x4 25. " PID25 ,Fast Forcing Disable/Enable and Status 25" "Disabled,Enabled"
+  setclrfld.long 0x00 24. -0x8 24. -0x4 24. "             PID24 ,Fast Forcing Disable/Enable and Status 24" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 23. -0x8 23. -0x4 23. " PID23 ,Fast Forcing Disable/Enable and Status 23" "Disabled,Enabled"
+  setclrfld.long 0x00 22. -0x8 22. -0x4 22. "             PID22 ,Fast Forcing Disable/Enable and Status 22" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 21. -0x8 21. -0x4 21. " PID21 ,Fast Forcing Disable/Enable and Status 21" "Disabled,Enabled"
+  setclrfld.long 0x00 20. -0x8 20. -0x4 20. "             PID20 ,Fast Forcing Disable/Enable and Status 20" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 19. -0x8 19. -0x4 19. " PID19 ,Fast Forcing Disable/Enable and Status 19" "Disabled,Enabled"
+  setclrfld.long 0x00 18. -0x8 18. -0x4 18. "             PID18 ,Fast Forcing Disable/Enable and Status 18" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 17. -0x8 17. -0x4 17. " PID17 ,Fast Forcing Disable/Enable and Status 17" "Disabled,Enabled"
+  setclrfld.long 0x00 16. -0x8 16. -0x4 16. "             PID16 ,Fast Forcing Disable/Enable and Status 16" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 15. -0x8 15. -0x4 15. " PID15 ,Fast Forcing Disable/Enable and Status 15" "Disabled,Enabled"
+  setclrfld.long 0x00 14. -0x8 14. -0x4 14. "             PID14 ,Fast Forcing Disable/Enable and Status 14" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 13. -0x8 13. -0x4 13. " PID13 ,Fast Forcing Disable/Enable and Status 13" "Disabled,Enabled"
+  setclrfld.long 0x00 12. -0x8 12. -0x4 12. "             PID12 ,Fast Forcing Disable/Enable and Status 12" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 11. -0x8 11. -0x4 11. " PID11 ,Fast Forcing Disable/Enable and Status 11" "Disabled,Enabled"
+  setclrfld.long 0x00 10. -0x8 10. -0x4 10. "             PID10 ,Fast Forcing Disable/Enable and Status 10" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 9. -0x8 9. -0x4 9. " PID9  ,Fast Forcing Disable/Enable and Status 9" "Disabled,Enabled"
+  setclrfld.long 0x00 8. -0x8 8. -0x4 8. "             PID8  ,Fast Forcing Disable/Enable and Status 8" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 7. -0x8 7. -0x4 7. " PID7  ,Fast Forcing Disable/Enable and Status 7" "Disabled,Enabled"
+  setclrfld.long 0x00 6. -0x8 6. -0x4 6. "             PID6  ,Fast Forcing Disable/Enable and Status 6" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 5. -0x8 5. -0x4 5. " PID5  ,Fast Forcing Disable/Enable and Status 5" "Disabled,Enabled"
+  setclrfld.long 0x00 4. -0x8 4. -0x4 4. "             PID4  ,Fast Forcing Disable/Enable and Status 4" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 3. -0x8 3. -0x4 3. " PID3  ,Fast Forcing Disable/Enable and Status 3" "Disabled,Enabled"
+  setclrfld.long 0x00 2. -0x8 2. -0x4 2. "             PID2  ,Fast Forcing Disable/Enable and Status 2" "Disabled,Enabled"
+  textline "                           "
+  setclrfld.long 0x00 1. -0x8 1. -0x4 1. " SYS   ,Fast Forcing Disable/Enable and Status 1" "Disabled,Enabled"
+
+tree.end
+
+width 0xb
+tree.end
+
+; --------------------------------------------------
+; TWI (aus perat91sam7sx)
+; --------------------------------------------------
+
+tree "Two-wire Interface (TWI)"
+ base 0xFFFB8000
+width 0x11
+
+wgroup.long 0x00++0x03
+ line.long 0x00 "TWI_CR,Control Register"
+  bitfld.long 0x00 7. " SWRST  ,Software Reset" "No effect,Reset"
+  bitfld.long 0x00 3. "         MSDIS  ,TWI Master Transfer Disabled" "No effect,Disabled"
+  textline "                          "
+  bitfld.long 0x00 2. " MSEN   ,TWI Master Transfer Enabled" "No effect,Enabled"
+  bitfld.long 0x00 1. "         STOP   ,Send a STOP Condition" "No effect,Sent"
+  textline "                          "
+  bitfld.long 0x00 0. " START  ,Send a START Condition" "No effect,Sent"
+
+group.long 0x04++0x03
+ line.long 0x00 "TWI_MMR,Master Mode Register"
+  hexmask.long.byte 0x00 16.--22. 1 " DADR   ,Device Address"
+  bitfld.long 0x00 12. "                MREAD  ,Master Read Direction" "Write,Read"
+  textline "                          "
+  bitfld.long 0x00 8.--9. " IADRSZ ,Internal Device Address Size" "No address,One-byte,Two-byte,Three-byte"
+group.long 0x0c++0x07
+ line.long 0x00 "TWI_IADR,Internal Address Register"
+  hexmask.long.tbyte 0x00 0.--23. 1 " IADR   ,Internal Address"
+ line.long 0x04 "TWI_CWGR,Clock Waveform Generator Register"
+  hexmask.long.byte 0x04 16.--18. 1 " CKDIV  ,Clock Divider"
+  hexmask.long.byte 0x04 8.--15. 1 "                CHDIV  ,Clock High Divider"
+  textline "                          "
+  hexmask.long.byte 0x04 0.--7. 1 " CLDIV  ,Clock Low Divider"
+
+rgroup.long 0x20++0x03
+ line.long 0x00 "TWI_SR,Status Register"
+  bitfld.long 0x00 8. " NACK   ,Not Acknowledged" "Data received,Not acknowledged"
+  bitfld.long 0x00 2. " TXRDY  ,Transmit Holding Register Ready" "Not ready,Ready"
+  textline "                          "
+  bitfld.long 0x00 1. " RXRDY  ,Receive Holding Register Ready" "Not ready,Ready"
+  bitfld.long 0x00 0. "        TXCOMP ,Transmission Completed" "Not completed,Completed"
+  textline "                          "
+  bitfld.long 0x00 7. " UNRE   ,Underrun Error" "No error,Error"
+  bitfld.long 0x00 6. "         OVRE   ,Overrun Error" "No error,Error"
+
+group.long 0x2c++0x03
+ line.long 0x00 "TWI_IMR_Set/Clr,Interrupt Mask Register"
+  setclrfld.long 0x00 8. -0x8 8. -0x4 8. " NACK   ,Not Acknowledged" "Disabled,Enabled"
+  setclrfld.long 0x00 2. -0x8 2. -0x4 2. "         TXRDY  ,Transmit Holding Register Ready" "Disabled,Enabled"
+  textline "                          "
+  setclrfld.long 0x00 1. -0x8 1. -0x4 1. " RXRDY  ,Receive Holding Register Ready" "Disabled,Enabled"
+  setclrfld.long 0x00 0. -0x8 0. -0x4 0. "         TXCOMP ,Transmission Completed" "Disabled,Enabled"
+  textline "                          "
+  setclrfld.long 0x00 7. -0x8 7. -0x4 7. " UNRE   ,Underrun Error" "Disabled,Enabled"
+  setclrfld.long 0x00 6. -0x8 6. -0x4 6. "         OVRE   ,Overrun Error" "Disabled,Enabled"
+width 0x9  
+rgroup.long 0x30++0x03
+ line.long 0x0 "TWI_RHR,Receive Holding Register"
+  hexmask.long.byte 0x0 0.--7. 1 " RXDATA ,Master or Slave Receive Holding Data"
+
+group.long 0x34++0x03
+ line.long 0x00 "TWI_THR,Transmit Holding Register"
+  hexmask.long.byte 0x00 0.--7. 1 " TXDATA ,Master or Slave Transmit Holding Data"
+
+width 0xb
+tree.end
+
+
+
+
+
+
+tree "Serial Peripheral Interface (SPI)"
+ sif (cpu()=="AT91SAM7S512")
+ tree "SPI Registers"
+  base 0xFFFE0000
+
+width 8.
+wgroup.long 0x00++0x03
+ line.long 0x00 "SPI_CR,Control Register"
+  bitfld.long 0x00 24. " LASTXFER ,Last Transfer" "No effect,TD transferred"
+  bitfld.long 0x00 7. "  SWRST   ,SPI Software Reset" "No effect,Reset"
+  textline "                 "
+  bitfld.long 0x00 1. " SPIDIS   ,SPI Disable" "No effect,Disabled"
+  bitfld.long 0x00 0. "       SPIEN   ,SPI Enable" "No effect,Enabled"
+  
+
+if ((data.long(sd:0xFFFE0000+0x04)&0x07)==0x0)
+;if PCSDEC[2]=0 and PS[1]=0 and MSTR[0]=0
+group.long 0x04++0x03
+ line.long 0x00 "SPI_MR,Mode Register"
+  hexmask.long.byte 0x00 24.--31. 1 " DLYBCS   ,Delay Between Chip Selects"
+  bitfld.long 0x00 4. "              MODFDIS ,Mode Fault Detection" "Enabled,Disabled"
+  textline "                 "
+  bitfld.long 0x00 2. " PCSDEC   ,Chip Select Decode" "Direct,Decoder"
+  bitfld.long 0x00 1. "         PS      ,Peripheral Select" "Fixed,Variable"
+  textline "                 "
+  bitfld.long 0x00 0. " MSTR     ,Master/Slave Mode" "Slave,Master"
+  bitfld.long 0x00 16.--19. "          PCS     ,Peripheral Chip Select" "NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=0111,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,Forbidden"
+  
+elif (((data.long(sd:0xFFFE0000+0x04)&0x06)==0x0)&&((d.l(sd:0xFFFE0000+0x04)&0x1)==0x1))
+;if PCSDEC[2]=0 and PS[1]=0 and MSTR[0]=1
+group.long 0x04++0x03
+ line.long 0x00 "SPI_MR,Mode Register"
+  hexmask.long.byte 0x00 24.--31. 1 " DLYBCS   ,Delay Between Chip Selects"
+  bitfld.long 0x00 4. "              MODFDIS ,Mode Fault Detection" "Enabled,Disabled"
+  textline "                 "
+  bitfld.long 0x00 2. " PCSDEC   ,Chip Select Decode" "Direct,Decoder"
+  bitfld.long 0x00 1. "         PS      ,Peripheral Select" "Fixed,Variable"
+  textline "                 "
+  bitfld.long 0x00 0. " MSTR     ,Master/Slave Mode" "Slave,Master"
+  bitfld.long 0x00 16.--19. "          PCS     ,Peripheral Chip Select" "NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=0111,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,Forbidden"
+  textline "                 "
+  bitfld.long 0x00 7. " LLB      ,Local Loopback" "Disabled,Enabled"
+  
+elif (((data.long(sd:0xFFFE0000+0x04)&0x04)==0x04)&&((d.l(sd:0xFFFE0000+0x04)&0x03)==0x0))
+;if PCSDEC[2]=1 and PS[1]=0 and MSTR[0]=0
+group.long 0x04++0x03
+ line.long 0x00 "SPI_MR,Mode Register"
+  hexmask.long.byte 0x00 24.--31. 1 " DLYBCS   ,Delay Between Chip Selects"
+  bitfld.long 0x00 4. "              MODFDIS ,Mode Fault Detection" "Enabled,Disabled"
+  textline "                 "
+  bitfld.long 0x00 2. " PCSDEC   ,Chip Select Decode" "Direct,Decoder"
+  bitfld.long 0x00 1. "         PS      ,Peripheral Select" "Fixed,Variable"
+  textline "                 "
+  bitfld.long 0x00 0. " MSTR     ,Master/Slave Mode" "Slave,Master"
+  bitfld.long 0x00 16.--19. "          PCS     ,Peripheral Chip Select" "PCS0,PCS1,PCS2,PCS3,PCS4,PCS5,PCS6,PCS7,PCS8,PCS9,PCS10,PCS11,PCS12,PCS13,PCS14,PCS15"
+
+elif (((data.long(sd:0xFFFE0000+0x04)&0x05)==0x05)&&((d.l(sd:0xFFFE0000+0x04)&0x2)==0x0))
+;if PCSDEC[2]=1 and PS[1]=0 and MSTR[0]=1
+group.long 0x04++0x03
+ line.long 0x00 "SPI_MR,Mode Register"
+  hexmask.long.byte 0x00 24.--31. 1 " DLYBCS   ,Delay Between Chip Selects"  
+  bitfld.long 0x00 4. "              MODFDIS ,Mode Fault Detection" "Enabled,Disabled"
+  textline "                 "
+  bitfld.long 0x00 2. " PCSDEC   ,Chip Select Decode" "Direct,Decoder"
+  bitfld.long 0x00 1. "         PS      ,Peripheral Select" "Fixed,Variable"
+  textline "                 "
+  bitfld.long 0x00 0. " MSTR     ,Master/Slave Mode" "Slave,Master"
+  bitfld.long 0x00 16.--19. "          PCS     ,Peripheral Chip Select" "PCS0,PCS1,PCS2,PCS3,PCS4,PCS5,PCS6,PCS7,PCS8,PCS9,PCS10,PCS11,PCS12,PCS13,PCS14,PCS15"
+  textline "                 "
+  bitfld.long 0x00 7. " LLB      ,Local Loopback" "Disabled,Enabled"
+  
+elif (((data.long(sd:0xFFFE0000+0x04)&0x05)==0x0)&&((d.l(sd:0xFFFE0000+0x04)&0x2)==0x2))
+;if PCSDEC[2]=0 and PS[1]=1 and MSTR[0]=0
+group.long 0x04++0x03
+ line.long 0x00 "SPI_MR,Mode Register"
+  hexmask.long.byte 0x00 24.--31. 1 " DLYBCS   ,Delay Between Chip Selects"
+  bitfld.long 0x00 4. "              MODFDIS ,Mode Fault Detection" "Enabled,Disabled"
+  textline "                 "
+  bitfld.long 0x00 2. " PCSDEC   ,Chip Select Decode" "Direct,Decoder"
+  bitfld.long 0x00 1. "         PS      ,Peripheral Select" "Fixed,Variable"
+  textline "                 "
+  bitfld.long 0x00 0. " MSTR     ,Master/Slave Mode" "Slave,Master"
+
+elif (((data.long(sd:0xFFFE0000+0x04)&0x04)==0x0)&&((d.l(sd:0xFFFE0000+0x04)&0x3)==0x3))
+;if PCSDEC[2]=0 and PS[1]=1 and MSTR[0]=1
+group.long 0x04++0x03
+ line.long 0x00 "SPI_MR,Mode Register"
+  hexmask.long.byte 0x00 24.--31. 1 " DLYBCS   ,Delay Between Chip Selects"
+  bitfld.long 0x00 4. "              MODFDIS ,Mode Fault Detection" "Enabled,Disabled"
+  textline "                 "
+  bitfld.long 0x00 2. " PCSDEC   ,Chip Select Decode" "Direct,Decoder"
+  bitfld.long 0x00 1. "         PS      ,Peripheral Select" "Fixed,Variable"
+  textline "                 "
+  bitfld.long 0x00 0. " MSTR     ,Master/Slave Mode" "Slave,Master"
+  textline "                 "
+  bitfld.long 0x00 7. " LLB      ,Local Loopback" "Disabled,Enabled"
+
+elif (((data.long(sd:0xFFFE0000+0x04)&0x06)==0x06)&&((d.l(sd:0xFFFE0000+0x04)&0x1)==0x0))
+;if PCSDEC[2]=1 and PS[1]=1 and MSTR[0]=0
+group.long 0x04++0x03
+ line.long 0x00 "SPI_MR,Mode Register"
+  hexmask.long.byte 0x00 24.--31. 1 " DLYBCS   ,Delay Between Chip Selects"
+  bitfld.long 0x00 4. "              MODFDIS ,Mode Fault Detection" "Enabled,Disabled"
+  textline "                 "
+  bitfld.long 0x00 2. " PCSDEC   ,Chip Select Decode" "Direct,Decoder"
+  bitfld.long 0x00 1. "         PS      ,Peripheral Select" "Fixed,Variable"
+  textline "                 "
+  bitfld.long 0x00 0. " MSTR     ,Master/Slave Mode" "Slave,Master"
+  
+elif (((data.long(sd:0xFFFE0000+0x04)&0x07)==0x07))
+;if PCSDEC[2]=1 and PS[1]=1 and MSTR[0]=1
+group.long 0x04++0x03
+ line.long 0x00 "SPI_MR,Mode Register"
+  hexmask.long.byte 0x00 24.--31. 1 " DLYBCS   ,Delay Between Chip Selects"
+  bitfld.long 0x00 4. "              MODFDIS ,Mode Fault Detection" "Enabled,Disabled"
+  textline "                 "
+  bitfld.long 0x00 2. " PCSDEC   ,Chip Select Decode" "Direct,Decoder"
+  bitfld.long 0x00 1. "         PS      ,Peripheral Select" "Fixed,Variable"
+  textline "                 "
+  bitfld.long 0x00 0. " MSTR     ,Master/Slave Mode" "Slave,Master"
+  textline "                 "
+  bitfld.long 0x00 7. " LLB      ,Local Loopback" "Disabled,Enabled"
+  
+endif
+
+width 9.
+;if PCSDEC[2]=0 and PS[1]=0 and MSTR[0]=0
+if ((data.long(sd:0xFFFE0000+0x04)&0x07)==0x00)
+rgroup.long 0x08++0x03
+ line.long 0x00 "SPI_RDR,Receive Data Register"
+  hexmask.long.word 0x00 0.--15. 1. " RD       ,Receive Data"
+wgroup.long 0x0c++0x03
+ line.long 0x00 "SPI_TDR,Transmit Data Register"
+  hexmask.long.word 0x00 0.--15. 1. " TD       ,Transmit Data"
+
+elif (((data.long(sd:0xFFFE0000+0x04)&0x06)==0x00)&&((data.long(sd:0xFFFE0000+0x04)&0x01)==0x01))
+;if PCSDEC[2]=0 and PS[1]=0 and MSTR[0]=1
+rgroup.long 0x08++0x03
+ line.long 0x00 "SPI_RDR,Receive Data Register"
+  bitfld.long 0x00 16.--19. " PCS      ,Peripheral Chip Select" "NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=0111,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,Forbidden"
+  hexmask.long.word 0x00 0.--15. 1 "  RD      ,Receive Data"
+
+wgroup.long 0x0c++0x03
+ line.long 0x00 "SPI_TDR,Transmit Data Register"
+  hexmask.long.word 0x00 0.--15. 1 " TD       ,Transmit Data"  
+
+;if PCSDEC[2]=0 and PS[1]=1 and MSTR[0]=0  
+elif (((data.long(sd:0xFFFE0000+0x04)&0x05)==0x00)&&((data.long(sd:0xFFFE0000+0x04)&0x2)==0x2))
+rgroup.long 0x08++0x03
+ line.long 0x00 "SPI_RDR,Receive Data Register"
+  hexmask.long.word 0x00 0.--15. 1. " RD       ,Receive Data"
+
+wgroup.long 0x0c++0x03
+ line.long 0x00 "SPI_TDR,Transmit Data Register"
+  bitfld.long 0x00 24. " LASTXFER ,Last Transfer" "No effect,TD transferred"
+  bitfld.long 0x00 16.--19. "  PCS     ,Peripheral Chip Select" "NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=0111,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,Forbidden"
+  textline "                  "
+  hexmask.long.word 0x00 0.--15. 1 " TD       ,Transmit Data"
+    
+elif (((data.long(sd:0xFFFE0000+0x04)&0x04)==0x00)&&((data.long(sd:0xFFFE0000+0x04)&0x3)==0x3))
+;if PCSDEC[2]=0 and PS[1]=1 and MSTR[0]=1
+rgroup.long 0x08++0x03
+ line.long 0x00 "SPI_RDR,Receive Data Register"
+  bitfld.long 0x00 16.--19. " PCS      ,Peripheral Chip Select" "NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=0111,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,Forbidden"
+  hexmask.long.word 0x00 0.--15. 1 "  RD      ,Receive Data"
+
+wgroup.long 0x0c++0x03
+ line.long 0x00 "SPI_TDR,Transmit Data Register"
+  bitfld.long 0x00 24. " LASTXFER ,Last Transfer" "No effect,TD transferred"
+  bitfld.long 0x00 16.--19. "  PCS     ,Peripheral Chip Select" "NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=0111,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,Forbidden"
+  textline "                  "
+  hexmask.long.word 0x00 0.--15. 1 " TD       ,Transmit Data"
+    
+elif ((data.long(sd:0xFFFE0000+0x04)&0x07)==0x07)
+;if PCSDEC[2]=1 and PS[1]=1 and MSTR[0]=1
+rgroup.long 0x08++0x03
+ line.long 0x00 "SPI_RDR,Receive Data Register"
+  bitfld.long 0x00 16.--19. " PCS      ,Peripheral Chip Select" "NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=0111,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,Forbidden"
+  hexmask.long.word 0x00 0.--15. 1 "  RD      ,Receive Data"
+
+wgroup.long 0x0c++0x03
+ line.long 0x00 "SPI_TDR,Transmit Data Register"
+  bitfld.long 0x00 24. " LASTXFER ,Last Transfer" "No effect,TD transferred"
+  bitfld.long 0x00 16.--19. "  PCS     ,Peripheral Chip Select" "PCS0,PCS1,PCS2,PCS3,PCS4,PCS5,PCS6,PCS7,PCS8,PCS9,PCS10,PCS11,PCS12,PCS13,PCS14,PCS15"
+  textline "                  "
+  hexmask.long.word 0x00 0.--15. 1 " TD       ,Transmit Data"
+  
+elif (((data.long(sd:0xFFFE0000+0x04)&0x05)==0x05)&&((data.long(sd:0xFFFE0000+0x04)&0x02)==0x00))
+;if PCSDEC[2]=1 and PS[1]=0 and MSTR[0]=1
+rgroup.long 0x08++0x03
+ line.long 0x00 "SPI_RDR,Receive Data Register"
+  bitfld.long 0x00 16.--19. " PCS      ,Peripheral Chip Select" "NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=0111,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,Forbidden"
+  hexmask.long.word 0x00 0.--15. 1 "  RD      ,Receive Data"
+
+wgroup.long 0x0c++0x03
+ line.long 0x00 "SPI_TDR,Transmit Data Register"
+  hexmask.long.word 0x00 0.--15. 1 " TD       ,Transmit Data"
+  
+elif (((data.long(sd:0xFFFE0000+0x04)&0x06)==0x06)&&((data.long(sd:0xFFFE0000+0x04)&0x1)==0x0))
+;if PCSDEC[2]=1 and PS[1]=1 and MSTR[0]=0
+rgroup.long 0x08++0x03
+ line.long 0x00 "SPI_RDR,Receive Data Register"
+  hexmask.long.word 0x00 0.--15. 1 " RD       ,Receive Data"
+
+wgroup.long 0x0c++0x03
+ line.long 0x00 "SPI_TDR,Transmit Data Register"
+  bitfld.long 0x00 24. " LASTXFER ,Last Transfer" "No effect,TD transferred"
+  bitfld.long 0x00 16.--19. " PCS      ,Peripheral Chip Select" "PCS0,PCS1,PCS2,PCS3,PCS4,PCS5,PCS6,PCS7,PCS8,PCS9,PCS10,PCS11,PCS12,PCS13,PCS14,PCS15"
+  textline "                  "
+  hexmask.long.word 0x00 0.--15. 1 " TD       ,Transmit Data"
+  
+elif (((data.long(sd:0xFFFE0000+0x04)&0x04)==0x04)&&((data.long(sd:0xFFFE0000+0x04)&0x3)==0x0))
+;if PCSDEC[2]=1 and PS[1]=0 and MSTR[0]=0
+rgroup.long 0x08++0x03
+ line.long 0x00 "SPI_RDR,Receive Data Register"
+  hexmask.long.word 0x00 0.--15. 1 " RD       ,Receive Data"
+
+wgroup.long 0x0c++0x03
+ line.long 0x00 "SPI_TDR,Transmit Data Register"
+  hexmask.long.word 0x00 0.--15. 1 " TD       ,Transmit Data"
+
+endif
+
+width 8.
+rgroup.long 0x10++0x03
+ line.long 0x00 "SPI_SR,Status Register"
+  bitfld.long 0x00 16. " SPIENS   ,SPI Enable Status" "Disabled,Enabled"
+  bitfld.long 0x00 9. "        TXEMPTY ,Transmission Registers Empty" "Not empty,Empty"
+  textline "                 "
+  bitfld.long 0x00 8. " NSSR     ,NSS Rising" "Not detected,Detected"
+  bitfld.long 0x00 7. "    TXBUFE  ,TX Buffer Empty" "Not empty,Empty"
+  textline "                 "
+  bitfld.long 0x00 6. " RXBUFF   ,RX Buffer Full" "Not full,Full"
+  bitfld.long 0x00 5. "        ENDTX   ,End of TX Buffer" "No end,End"
+  textline "                 "
+  bitfld.long 0x00 4. " ENDRX    ,End of RX buffer" "No end,End"
+  bitfld.long 0x00 3. "          OVRES   ,Overrun Error Status" "No error,Error"
+  textline "                 "
+  bitfld.long 0x00 2. " MODF     ,Mode Fault Error" "No error,Error"
+  bitfld.long 0x00 1. "        TDRE    ,Transmit Data Register Empty" "Not empty,Empty"
+  textline "                 "
+  bitfld.long 0x00 0. " RDRF     ,Receive Data Register Full" "Not full,Full"
+
+width 17.
+group.long 0x1c++0x03
+ line.long 0x00 "SPI_IMR_Set/Clr,Interrupt Enable/Mask Register"
+  setclrfld.long 0x00 9. -0x8 9. -0x4 9. " TXEMPTY  ,Transmission Registers Empty Mask" "Disabled,Enabled"
+  setclrfld.long 0x00 8. -0x8 8. -0x4 8. "        NSSR    ,NSS Rising Mask" "Disabled,Enabled"
+  textline "                          "
+  setclrfld.long 0x00 7. -0x8 7. -0x4 7. " TXBUFE   ,TX Buffer Empty Mask" "Disabled,Enabled"
+  setclrfld.long 0x00 6. -0x8 6. -0x4 6. "        RXBUFF  ,RX Buffer Full Mask" "Disabled,Enabled"
+  textline "                          "
+  setclrfld.long 0x00 5. -0x8 5. -0x4 5. " ENDTX    ,End of TX Buffer Mask" "Disabled,Enabled"
+  setclrfld.long 0x00 4. -0x8 4. -0x4 4. "        ENDRX   ,End of RX buffer Mask" "Disabled,Enabled"
+  textline "                          "
+  setclrfld.long 0x00 3. -0x8 3. -0x4 3. " OVRES    ,Overrun Error Status Mask" "Disabled,Enabled"
+  setclrfld.long 0x00 2. -0x8 2. -0x4 2. "        MODF    ,Mode Fault Error Mask" "Disabled,Enabled"
+  textline "                          "
+  setclrfld.long 0x00 1. -0x8 1. -0x4 1. " TDRE     ,Transmit Data Register Empty Mask" "Disabled,Enabled"
+  setclrfld.long 0x00 0. -0x8 0. -0x4 0. "        RDRF    ,Receive Data Register Full Mask" "Disabled,Enabled"
+
+width 10.
+group.long 0x30--0x3f
+ line.long 0x00 "SPI_CSR0,Chip Select Register 0"
+  hexmask.long.byte 0x00 24.--31. 1 " DLYBCT   ,Delay Between Consecutive Transfers"
+  hexmask.long.byte 0x00 16.--23. 1 "              DLYBS   ,Delay Before SPCK"
+  textline "                   "
+  hexmask.long.byte 0x00 8.--15. 1 " SCBR     ,Serial Clock Baud Rate"
+  bitfld.long 0x00 4.--7. "              BITS    ,Bits per Transfer" "8,9,10,11,12,13,14,15,16,Reserved,Reserved,Reserved,Reserved,Reserved,Reserved,Reserved"
+  textline "                   "
+  bitfld.long 0x00 3. " CSAAT    ,Chip Select Active After Transfer" "Rised,Not rised"
+  bitfld.long 0x00 1. "       NCPHA   ,Clock Phase" "Changed,Captured"
+  textline "                   "
+  bitfld.long 0x00 0. " CPOL     ,Clock Polarity" "0,1"
+ line.long 0x04 "SPI_CSR1,Chip Select Register 1"
+  hexmask.long.byte 0x04 24.--31. 1 " DLYBCT   ,Delay Between Consecutive Transfers"
+  hexmask.long.byte 0x04 16.--23. 1 "              DLYBS   ,Delay Before SPCK"
+  textline "                   "
+  hexmask.long.byte 0x04 8.--15. 1 " SCBR     ,Serial Clock Baud Rate"
+  bitfld.long 0x04 4.--7. "              BITS    ,Bits per Transfer" "8,9,10,11,12,13,14,15,16,Reserved,Reserved,Reserved,Reserved,Reserved,Reserved,Reserved"
+  textline "                   "
+  bitfld.long 0x04 3. " CSAAT    ,Chip Select Active After Transfer" "Rised,Not rised"
+  bitfld.long 0x04 1. "       NCPHA   ,Clock Phase" "Changed,Captured"
+  textline "                   "
+  bitfld.long 0x04 0. " CPOL     ,Clock Polarity" "0,1"
+ line.long 0x08 "SPI_CSR2,Chip Select Register 2"
+  hexmask.long.byte 0x08 24.--31. 1 " DLYBCT   ,Delay Between Consecutive Transfers"
+  hexmask.long.byte 0x08 16.--23. 1 "              DLYBS   ,Delay Before SPCK"
+  textline "                   "
+  hexmask.long.byte 0x08 8.--15. 1 " SCBR     ,Serial Clock Baud Rate"
+  bitfld.long 0x08 4.--7. "              BITS    ,Bits per Transfer" "8,9,10,11,12,13,14,15,16,Reserved,Reserved,Reserved,Reserved,Reserved,Reserved,Reserved"
+  textline "                   "
+  bitfld.long 0x08 3. " CSAAT    ,Chip Select Active After Transfer" "Rised,Not rised"
+  bitfld.long 0x08 1. "       NCPHA   ,Clock Phase" "Changed,Captured"
+  textline "                   "
+  bitfld.long 0x08 0. " CPOL     ,Clock Polarity" "0,1"
+ line.long 0x0c "SPI_CSR3,Chip Select Register 3"
+  hexmask.long.byte 0x0c 24.--31. 1 " DLYBCT   ,Delay Between Consecutive Transfers"
+  hexmask.long.byte 0x0c 16.--23. 1 "              DLYBS   ,Delay Before SPCK"
+  textline "                   "
+  hexmask.long.byte 0x0c 8.--15. 1 " SCBR     ,Serial Clock Baud Rate"
+  bitfld.long 0x0c 4.--7. "              BITS    ,Bits per Transfer" "8,9,10,11,12,13,14,15,16,Reserved,Reserved,Reserved,Reserved,Reserved,Reserved,Reserved"
+  textline "                   "
+  bitfld.long 0x0c 3. " CSAAT    ,Chip Select Active After Transfer" "Rised,Not rised"
+  bitfld.long 0x0c 1. "       NCPHA   ,Clock Phase" "Changed,Captured"
+  textline "                   "
+  bitfld.long 0x0c 0. " CPOL     ,Clock Polarity" "0,1"
+
+width 0xb
+
+
+tree "Peripheral DMA Registers"
+width 0xd
+
+group.long 0x100--0x11F
+ line.long 0x00 "PERIPH_RPR,Receive Pointer Register"
+  hexmask.long 0x00 0.--31. 1 " RXPTR  ,Receive Pointer Address"
+ line.long 0x04 "PERIPH_RCR,Receive Counter Register"
+  hexmask.long.word 0x04 0.--15. 1 " RXCTR  ,Receive Counter Value"
+ line.long 0x08 "PERIPH_TPR,Transmit Pointer Register"
+  hexmask.long 0x08 0.--31. 1 " TXPTR  ,Transmit Pointer Address"
+ line.long 0x0c "PERIPH_TCR,Transmit Counter Register"
+  hexmask.long.word 0x0c 0.--15. 1 " TXCTR  ,Transmit Counter Value"
+ line.long 0x10 "PERIPH_RNPR,Receive Next Pointer Register"
+  hexmask.long 0x10 0.--31. 1 " RXNPTR ,Receive Next Pointer Address"
+ line.long 0x14 "PERIPH_RNCR,Receive Next Counter Register"
+  hexmask.long.word 0x14 0.--15. 1 " RXNCR  ,Receive Next Counter Value"
+ line.long 0x18 "PERIPH_TNPR,Transmit Next Pointer Register"
+  hexmask.long 0x18 0.--31. 1 " TXNPTR ,Transmit Next Pointer Address"
+ line.long 0x1c "PERIPH_TNCR,Transmit Next Counter Register"
+  hexmask.long.word 0x1C 0.--15. 1 " TXNCR  ,Transmit Next Counter Value"
+
+wgroup.long 0x120++0x03
+ line.long 0x00 "PERIPH_PTCR,PDC Transfer Control Register"
+  bitfld.long 0x00 9. " TXTDIS ,Transmitter Transfer Disable" "No effect,Disabled"
+  bitfld.long 0x00 8. "  TXTEN ,Transmitter Transfer Enable" "No effect,Enabled"
+  textline "                      "
+  bitfld.long 0x00 1. " RXTDIS ,Receiver Transfer Disable" "No effect,Disabled"
+  bitfld.long 0x00 0. "  RXTEN ,Receiver Transfer Enable" "No effect,Enabled"
+
+rgroup.long 0x124++0x03
+ line.long 0x00 "PERIPH_PTSR,PDC Transfer Status Register"
+  bitfld.long 0x00 8. " TXTEN  ,Transmitter Transfer Enable" "Disabled,Enabled"
+  bitfld.long 0x00 0. "   RXTEN ,Receiver Transfer Enable" "Disabled,Enabled"
+
+width 0xb
+tree.end
+
+ tree.end
+ else
+ tree "SPI Registers"
+  base 0xFFFE0000
+
+width 0x11
+
+wgroup.long 0x00++0x03
+ line.long 0x00 "SPI_CR,Control Register"
+  bitfld.long 0x00 24. " LASTXFER ,Last Transfer" "No effect,TD transferred"
+  bitfld.long 0x00 7. "  SWRST   ,SPI Software Reset" "No effect,Reset"
+  textline "                          "
+  bitfld.long 0x00 1. " SPIDIS   ,SPI Disable" "No effect,Disabled"
+  bitfld.long 0x00 0. "       SPIEN   ,SPI Enable" "No effect,Enabled"
+
+
+if (((data.long(sd:0xFFFE0000+0x04)&0x00000004)==0x00000000)&&((d.l(sd:0xFFFE0000+0x04)&0x2)==0x0))
+group.long 0x04++0x03
+ line.long 0x00 "SPI_MR,Mode Register"
+  hexmask.long.byte 0x00 24.--31. 1 " DLYBCS   ,Delay Between Chip Selects"
+  bitfld.long 0x00 16.--19. "              PCS     ,Peripheral Chip Select" "NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=0111,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,Forbidden"
+  textline "                          "
+  bitfld.long 0x00 7. " LLB      ,Local Loopback" "Disabled,Enabled"
+  bitfld.long 0x00 4. "        MODFDIS ,Mode Fault Detection" "Enabled,Disabled"
+  textline "                          "
+  sif (cpu()!="AT91SAM7S321"&&cpu()!="AT91SAM7SE32"&&cpu()!="AT91SAM7SE256"&&cpu()!="AT91SAM7SE512"&&cpu()!="AT91SAM7L64"&&cpu()!="AT91SAM7L128") 
+  bitfld.long 0x00 3. " FDIV     ,Clock Selection" "CORECLK,CORECLK/N"
+  endif
+  textline "                          "
+  bitfld.long 0x00 2. " PCSDEC   ,Chip Select Decode" "Direct,Decoder"
+  textline "                          "
+  bitfld.long 0x00 1. " PS       ,Peripheral Select" "Fixed,Variable"
+  bitfld.long 0x00 0. "        MSTR    ,Master/Slave Mode" "Slave,Master"
+
+elif (((data.long(sd:0xFFFE0000+0x04)&0x00000004)==0x00000004)&&((d.l(sd:0xFFFE0000+0x04)&0x2)==0x0))
+group.long 0x04++0x03
+ line.long 0x00 "SPI_MR,Mode Register"
+  hexmask.long.byte 0x00 24.--31. 1 " DLYBCS   ,Delay Between Chip Selects"
+  bitfld.long 0x00 16.--19. "              PCS     ,Peripheral Chip Select" "PCS0,PCS1,PCS2,PCS3,PCS4,PCS5,PCS6,PCS7,PCS8,PCS9,PCS10,PCS11,PCS12,PCS13,PCS14,PCS15"
+  textline "                          "
+  bitfld.long 0x00 7. " LLB      ,Local Loopback" "Disabled,Enabled"
+  bitfld.long 0x00 4. "        MODFDIS ,Mode Fault Detection" "Enabled,Disabled"
+  textline "                          "
+  sif (cpu()!="AT91SAM7S321"&&cpu()!="AT91SAM7SE32"&&cpu()!="AT91SAM7SE256"&&cpu()!="AT91SAM7SE512"&&cpu()!="AT91SAM7L64"&&cpu()!="AT91SAM7L128") 
+  bitfld.long 0x00 3. " FDIV     ,Clock Selection" "CORECLK,CORECLK/N"
+  endif
+  textline "                          "
+  bitfld.long 0x00 2. " PCSDEC   ,Chip Select Decode" "Direct,Decoder"
+  textline "                          "
+  bitfld.long 0x00 1. " PS       ,Peripheral Select" "Fixed,Variable"
+  bitfld.long 0x00 0. "        MSTR    ,Master/Slave Mode" "Slave,Master"
+
+elif (((data.long(sd:0xFFFE0000+0x04)&0x00000004)==0x00000000)&&((d.l(sd:0xFFFE0000+0x04)&0x2)==0x1))
+group.long 0x04++0x03
+ line.long 0x00 "SPI_MR,Mode Register"
+  hexmask.long.byte 0x00 24.--31. 1 " DLYBCS   ,Delay Between Chip Selects"
+  ;bitfld.long 0x00 16.--19. "              PCS     ,Peripheral Chip Select" "NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=0111,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,Forbidden"
+  textline "                          "
+  bitfld.long 0x00 7. " LLB      ,Local Loopback" "Disabled,Enabled"
+  bitfld.long 0x00 4. "        MODFDIS ,Mode Fault Detection" "Enabled,Disabled"
+  textline "                          "
+  sif (cpu()!="AT91SAM7S321"&&cpu()!="AT91SAM7SE32"&&cpu()!="AT91SAM7SE256"&&cpu()!="AT91SAM7SE512"&&cpu()!="AT91SAM7L64"&&cpu()!="AT91SAM7L128") 
+  bitfld.long 0x00 3. " FDIV     ,Clock Selection" "CORECLK,CORECLK/N"
+  endif
+  textline "                          "
+  bitfld.long 0x00 2. " PCSDEC   ,Chip Select Decode" "Direct,Decoder"
+  textline "                          "
+  bitfld.long 0x00 1. " PS       ,Peripheral Select" "Fixed,Variable"
+  bitfld.long 0x00 0. "        MSTR    ,Master/Slave Mode" "Slave,Master"
+else
+group.long 0x04++0x03
+ line.long 0x00 "SPI_MR,Mode Register"
+  hexmask.long.byte 0x00 24.--31. 1 " DLYBCS   ,Delay Between Chip Selects"
+  ;bitfld.long 0x00 16.--19. "              PCS     ,Peripheral Chip Select" "PCS0,PCS1,PCS2,PCS3,PCS4,PCS5,PCS6,PCS7,PCS8,PCS9,PCS10,PCS11,PCS12,PCS13,PCS14,PCS15"
+  textline "                          "
+  bitfld.long 0x00 7. " LLB      ,Local Loopback" "Disabled,Enabled"
+  bitfld.long 0x00 4. "        MODFDIS ,Mode Fault Detection" "Enabled,Disabled"
+  textline "                          "
+  sif (cpu()!="AT91SAM7S321"&&cpu()!="AT91SAM7SE32"&&cpu()!="AT91SAM7SE256"&&cpu()!="AT91SAM7SE512"&&cpu()!="AT91SAM7L64"&&cpu()!="AT91SAM7L128") 
+  bitfld.long 0x00 3. " FDIV     ,Clock Selection" "CORECLK,CORECLK/N"
+  endif
+  textline "                          "
+  bitfld.long 0x00 2. " PCSDEC   ,Chip Select Decode" "Direct,Decoder"
+  textline "                          "
+  bitfld.long 0x00 1. " PS       ,Peripheral Select" "Fixed,Variable"
+  bitfld.long 0x00 0. "        MSTR    ,Master/Slave Mode" "Slave,Master"
+   
+endif
+
+if (((data.long(sd:0xFFFE0000+0x04)&0x00000005)==0x00000000)&&((data.long(sd:0xFFFE0000+0x04)&0x2)==0x2))
+
+rgroup.long 0x08++0x03
+ line.long 0x00 "SPI_RDR,Receive Data Register"
+  ;bitfld.long 0x00 16.--19. " PCS      ,Peripheral Chip Select" "NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=0111,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,Forbidden"
+  hexmask.long.word 0x00 0.--15. 1 " RD       ,Receive Data"
+
+
+wgroup.long 0x0c++0x03
+ line.long 0x00 "SPI_TDR,Transmit Data Register"
+  bitfld.long 0x00 24. " LASTXFER ,Last Transfer" "No effect,TD transferred"
+  ;bitfld.long 0x00 16.--19. "  PCS     ,Peripheral Chip Select" "NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=0111,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,Forbidden"
+  textline "                          "
+  hexmask.long.word 0x00 0.--15. 1 " TD       ,Transmit Data"
+
+elif (((data.long(sd:0xFFFE0000+0x04)&0x00000005)==0x00000000)&&((data.long(sd:0xFFFE0000+0x04)&0x2)==0x0))
+
+rgroup.long 0x08++0x03
+ line.long 0x00 "SPI_RDR,Receive Data Register"
+  ;bitfld.long 0x00 16.--19. " PCS      ,Peripheral Chip Select" "NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=0111,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,Forbidden"
+  hexmask.long.word 0x00 0.--15. 1 " RD       ,Receive Data"
+
+
+wgroup.long 0x0c++0x03
+ line.long 0x00 "SPI_TDR,Transmit Data Register"
+  ;bitfld.long 0x00 24. " LASTXFER ,Last Transfer" "No effect,TD transferred"
+  ;bitfld.long 0x00 16.--19. "  PCS     ,Peripheral Chip Select" "NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=0111,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,Forbidden"
+  textline "                          "
+  hexmask.long.word 0x00 0.--15. 1 " TD       ,Transmit Data"
+  
+  
+elif (((data.long(sd:0xFFFE0000+0x04)&0x00000005)==0x00000001)&&((data.long(sd:0xFFFE0000+0x04)&0x2)==0x2))  
+rgroup.long 0x08++0x03
+ line.long 0x00 "SPI_RDR,Receive Data Register"
+  bitfld.long 0x00 16.--19. " PCS      ,Peripheral Chip Select" "NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=0111,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,Forbidden"
+  hexmask.long.word 0x00 0.--15. 1 "  RD      ,Receive Data"
+
+
+wgroup.long 0x0c++0x03
+ line.long 0x00 "SPI_TDR,Transmit Data Register"
+  bitfld.long 0x00 24. " LASTXFER ,Last Transfer" "No effect,TD transferred"
+  bitfld.long 0x00 16.--19. "  PCS     ,Peripheral Chip Select" "NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=0111,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,Forbidden"
+  textline "                          "
+  hexmask.long.word 0x00 0.--15. 1 " TD       ,Transmit Data"
+  
+elif (((data.long(sd:0xFFFE0000+0x04)&0x00000005)==0x00000001)&&((data.long(sd:0xFFFE0000+0x04)&0x2)==0x0))
+
+rgroup.long 0x08++0x03
+ line.long 0x00 "SPI_RDR,Receive Data Register"
+  bitfld.long 0x00 16.--19. " PCS      ,Peripheral Chip Select" "NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=0111,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,Forbidden"
+  hexmask.long.word 0x00 0.--15. 1 "  RD      ,Receive Data"
+
+
+wgroup.long 0x0c++0x03
+ line.long 0x00 "SPI_TDR,Transmit Data Register"
+  ;bitfld.long 0x00 24. " LASTXFER ,Last Transfer" "No effect,TD transferred"
+  bitfld.long 0x00 16.--19. " PCS     ,Peripheral Chip Select" "NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=0111,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,NPCS[3:0]=1011,NPCS[3:0]=1110,NPCS[3:0]=1101,NPCS[3:0]=1110,Forbidden"
+  textline "                          "
+  hexmask.long.word 0x00 0.--15. 1 " TD       ,Transmit Data"
+  
+  
+elif (((data.long(sd:0xFFFE0000+0x04)&0x00000005)==0x00000005)&&((data.long(sd:0xFFFE0000+0x04)&0x2)==0x2))
+rgroup.long 0x08++0x03
+ line.long 0x00 "SPI_RDR,Receive Data Register"
+  bitfld.long 0x00 16.--19. " PCS      ,Peripheral Chip Select" "PCS0,PCS1,PCS2,PCS3,PCS4,PCS5,PCS6,PCS7,PCS8,PCS9,PCS10,PCS11,PCS12,PCS13,PCS14,PCS15"
+  hexmask.long.word 0x00 0.--15. 1 "           RD      ,Receive Data"
+
+
+wgroup.long 0x0c++0x03
+ line.long 0x00 "SPI_TDR,Transmit Data Register"
+  bitfld.long 0x00 24. " LASTXFER ,Last Transfer" "No effect,TD transferred"
+  bitfld.long 0x00 16.--19. "  PCS     ,Peripheral Chip Select" "PCS0,PCS1,PCS2,PCS3,PCS4,PCS5,PCS6,PCS7,PCS8,PCS9,PCS10,PCS11,PCS12,PCS13,PCS14,PCS15"
+  textline "                          "
+  hexmask.long.word 0x00 0.--15. 1 " TD       ,Transmit Data"
+  
+elif (((data.long(sd:0xFFFE0000+0x04)&0x00000005)==0x00000005)&&((data.long(sd:0xFFFE0000+0x04)&0x2)==0x0))
+
+rgroup.long 0x08++0x03
+ line.long 0x00 "SPI_RDR,Receive Data Register"
+  bitfld.long 0x00 16.--19. " PCS      ,Peripheral Chip Select" "PCS0,PCS1,PCS2,PCS3,PCS4,PCS5,PCS6,PCS7,PCS8,PCS9,PCS10,PCS11,PCS12,PCS13,PCS14,PCS15"
+  hexmask.long.word 0x00 0.--15. 1 "           RD      ,Receive Data"
+
+
+wgroup.long 0x0c++0x03
+ line.long 0x00 "SPI_TDR,Transmit Data Register"
+  ;bitfld.long 0x00 24. " LASTXFER ,Last Transfer" "No effect,TD transferred"
+  bitfld.long 0x00 16.--19. " PCS     ,Peripheral Chip Select" "PCS0,PCS1,PCS2,PCS3,PCS4,PCS5,PCS6,PCS7,PCS8,PCS9,PCS10,PCS11,PCS12,PCS13,PCS14,PCS15"
+  textline "                          "
+  hexmask.long.word 0x00 0.--15. 1 " TD       ,Transmit Data"
+  
+
+elif (((data.long(sd:0xFFFE0000+0x04)&0x00000005)==0x00000004)&&((data.long(sd:0xFFFE0000+0x04)&0x2)==0x2))
+rgroup.long 0x08++0x03
+ line.long 0x00 "SPI_RDR,Receive Data Register"
+  ;bitfld.long 0x00 16.--19. " PCS      ,Peripheral Chip Select" "PCS0,PCS1,PCS2,PCS3,PCS4,PCS5,PCS6,PCS7,PCS8,PCS9,PCS10,PCS11,PCS12,PCS13,PCS14,PCS15"
+  hexmask.long.word 0x00 0.--15. 1 " RD       ,Receive Data"
+
+
+wgroup.long 0x0c++0x03
+ line.long 0x00 "SPI_TDR,Transmit Data Register"
+  bitfld.long 0x00 24. " LASTXFER ,Last Transfer" "No effect,TD transferred"
+  ;bitfld.long 0x00 16.--19. "  PCS     ,Peripheral Chip Select" "PCS0,PCS1,PCS2,PCS3,PCS4,PCS5,PCS6,PCS7,PCS8,PCS9,PCS10,PCS11,PCS12,PCS13,PCS14,PCS15"
+  textline "                          "
+  hexmask.long.word 0x00 0.--15. 1 " TD       ,Transmit Data"
+else
+rgroup.long 0x08++0x03
+ line.long 0x00 "SPI_RDR,Receive Data Register"
+  ;bitfld.long 0x00 16.--19. " PCS      ,Peripheral Chip Select" "PCS0,PCS1,PCS2,PCS3,PCS4,PCS5,PCS6,PCS7,PCS8,PCS9,PCS10,PCS11,PCS12,PCS13,PCS14,PCS15"
+  hexmask.long.word 0x00 0.--15. 1 " RD       ,Receive Data"
+
+
+wgroup.long 0x0c++0x03
+ line.long 0x00 "SPI_TDR,Transmit Data Register"
+  ;bitfld.long 0x00 24. " LASTXFER ,Last Transfer" "No effect,TD transferred"
+  ;bitfld.long 0x00 16.--19. " PCS     ,Peripheral Chip Select" "PCS0,PCS1,PCS2,PCS3,PCS4,PCS5,PCS6,PCS7,PCS8,PCS9,PCS10,PCS11,PCS12,PCS13,PCS14,PCS15"
+  textline "                          "
+  hexmask.long.word 0x00 0.--15. 1 " TD       ,Transmit Data"
+  
+
+endif
+
+
+;hgroup.long 0x10++0x03
+; hide.long 0x00 "SPI_SR,Status Register"
+; in
+;width 8.
+rgroup.long 0x10++0x03
+ line.long 0x00 "SPI_SR,Status Register"
+  bitfld.long 0x00 16. " SPIENS   ,SPI Enable Status" "Disabled,Enabled"
+  bitfld.long 0x00 9. "        TXEMPTY ,Transmission Registers Empty" "Not empty,Empty"
+  textline "                 "
+  bitfld.long 0x00 8. " NSSR     ,NSS Rising" "Not detected,Detected"
+  bitfld.long 0x00 7. "    TXBUFE  ,TX Buffer Empty" "Not empty,Empty"
+  textline "                 "
+  bitfld.long 0x00 6. " RXBUFF   ,RX Buffer Full" "Not full,Full"
+  bitfld.long 0x00 5. "        ENDTX   ,End of TX Buffer" "No end,End"
+  textline "                 "
+  bitfld.long 0x00 4. " ENDRX    ,End of RX buffer" "No end,End"
+  bitfld.long 0x00 3. "          OVRES   ,Overrun Error Status" "No error,Error"
+  textline "                 "
+  bitfld.long 0x00 2. " MODF     ,Mode Fault Error" "No error,Error"
+  bitfld.long 0x00 1. "        TDRE    ,Transmit Data Register Empty" "Not empty,Empty"
+  textline "                 "
+  bitfld.long 0x00 0. " RDRF     ,Receive Data Register Full" "Not full,Full"
+
+
+group.long 0x1c++0x03
+ line.long 0x00 "SPI_IMR_Set/Clr,Interrupt Enable/Mask Register"
+  setclrfld.long 0x00 9. -0x8 9. -0x4 9. " TXEMPTY  ,Transmission Registers Empty Mask" "Disabled,Enabled"
+  setclrfld.long 0x00 8. -0x8 8. -0x4 8. "        NSSR    ,NSS Rising Mask" "Disabled,Enabled"
+  textline "                          "
+  setclrfld.long 0x00 7. -0x8 7. -0x4 7. " TXBUFE   ,TX Buffer Empty Mask" "Disabled,Enabled"
+  setclrfld.long 0x00 6. -0x8 6. -0x4 6. "        RXBUFF  ,RX Buffer Full Mask" "Disabled,Enabled"
+  textline "                          "
+  setclrfld.long 0x00 5. -0x8 5. -0x4 5. " ENDTX    ,End of TX Buffer Mask" "Disabled,Enabled"
+  setclrfld.long 0x00 4. -0x8 4. -0x4 4. "        ENDRX   ,End of RX buffer Mask" "Disabled,Enabled"
+  textline "                          "
+  setclrfld.long 0x00 3. -0x8 3. -0x4 3. " OVRES    ,Overrun Error Status Mask" "Disabled,Enabled"
+  setclrfld.long 0x00 2. -0x8 2. -0x4 2. "        MODF    ,Mode Fault Error Mask" "Disabled,Enabled"
+  textline "                          "
+  setclrfld.long 0x00 1. -0x8 1. -0x4 1. " TDRE     ,Transmit Data Register Empty Mask" "Disabled,Enabled"
+  setclrfld.long 0x00 0. -0x8 0. -0x4 0. "        RDRF    ,Receive Data Register Full Mask" "Disabled,Enabled"
+
+group.long 0x30--0x3f
+ line.long 0x00 "SPI_CSR0,Chip Select Register 0"
+  hexmask.long.byte 0x00 24.--31. 1 " DLYBCT   ,Delay Between Consecutive Transfers"
+  hexmask.long.byte 0x00 16.--23. 1 "              DLYBS   ,Delay Before SPCK"
+  textline "                          "
+  hexmask.long.byte 0x00 8.--15. 1 " SCBR     ,Serial Clock Baud Rate"
+  bitfld.long 0x00 4.--7. "              BITS    ,Bits per Transfer" "8,9,10,11,12,13,14,15,16,Reserved,Reserved,Reserved,Reserved,Reserved,Reserved,Reserved"
+  textline "                          "
+  bitfld.long 0x00 3. " CSAAT    ,Chip Select Active After Transfer" "Rised,Not rised"
+  bitfld.long 0x00 1. "       NCPHA   ,Clock Phase" "Captured,Changed"
+  textline "                          "
+  bitfld.long 0x00 0. " CPOL     ,Clock Polarity" "0,1"
+
+
+ line.long 0x04 "SPI_CSR1,Chip Select Register 1"
+  hexmask.long.byte 0x04 24.--31. 1 " DLYBCT   ,Delay Between Consecutive Transfers"
+  hexmask.long.byte 0x04 16.--23. 1 "              DLYBS   ,Delay Before SPCK"
+  textline "                          "
+  hexmask.long.byte 0x04 8.--15. 1 " SCBR     ,Serial Clock Baud Rate"
+  bitfld.long 0x04 4.--7. "              BITS    ,Bits per Transfer" "8,9,10,11,12,13,14,15,16,Reserved,Reserved,Reserved,Reserved,Reserved,Reserved,Reserved"
+  textline "                          "
+  bitfld.long 0x04 3. " CSAAT    ,Chip Select Active After Transfer" "Rised,Not rised"
+  bitfld.long 0x04 1. "       NCPHA   ,Clock Phase" "Captured,Changed"
+  textline "                          "
+  bitfld.long 0x04 0. " CPOL     ,Clock Polarity" "0,1"
+
+
+
+ line.long 0x08 "SPI_CSR2,Chip Select Register 2"
+  hexmask.long.byte 0x08 24.--31. 1 " DLYBCT   ,Delay Between Consecutive Transfers"
+  hexmask.long.byte 0x08 16.--23. 1 "              DLYBS   ,Delay Before SPCK"
+  textline "                          "
+  hexmask.long.byte 0x08 8.--15. 1 " SCBR     ,Serial Clock Baud Rate"
+  bitfld.long 0x08 4.--7. "              BITS    ,Bits per Transfer" "8,9,10,11,12,13,14,15,16,Reserved,Reserved,Reserved,Reserved,Reserved,Reserved,Reserved"
+  textline "                          "
+  bitfld.long 0x08 3. " CSAAT    ,Chip Select Active After Transfer" "Rised,Not rised"
+  bitfld.long 0x08 1. "       NCPHA   ,Clock Phase" "Captured,Changed"
+  textline "                          "
+  bitfld.long 0x08 0. " CPOL     ,Clock Polarity" "0,1"
+
+
+
+ line.long 0x0c "SPI_CSR3,Chip Select Register 3"
+  hexmask.long.byte 0x0c 24.--31. 1 " DLYBCT   ,Delay Between Consecutive Transfers"
+  hexmask.long.byte 0x0c 16.--23. 1 "              DLYBS   ,Delay Before SPCK"
+  textline "                          "
+  hexmask.long.byte 0x0c 8.--15. 1 " SCBR     ,Serial Clock Baud Rate"
+  bitfld.long 0x0c 4.--7. "              BITS    ,Bits per Transfer" "8,9,10,11,12,13,14,15,16,Reserved,Reserved,Reserved,Reserved,Reserved,Reserved,Reserved"
+  textline "                          "
+  bitfld.long 0x0c 3. " CSAAT    ,Chip Select Active After Transfer" "Rised,Not rised"
+  bitfld.long 0x0c 1. "       NCPHA   ,Clock Phase" "Captured,Changed"
+  textline "                          "
+  bitfld.long 0x0c 0. " CPOL     ,Clock Polarity" "0,1"
+
+width 0xb
+
+
+
+tree "Peripheral DMA Registers"
+width 0xd
+
+group.long 0x100--0x11F
+ line.long 0x00 "PERIPH_RPR,Receive Pointer Register"
+  hexmask.long 0x00 0.--31. 1 " RXPTR  ,Receive Pointer Address"
+ line.long 0x04 "PERIPH_RCR,Receive Counter Register"
+  hexmask.long.word 0x04 0.--15. 1 " RXCTR  ,Receive Counter Value"
+ line.long 0x08 "PERIPH_TPR,Transmit Pointer Register"
+  hexmask.long 0x08 0.--31. 1 " TXPTR  ,Transmit Pointer Address"
+ line.long 0x0c "PERIPH_TCR,Transmit Counter Register"
+  hexmask.long.word 0x0c 0.--15. 1 " TXCTR  ,Transmit Counter Value"
+ line.long 0x10 "PERIPH_RNPR,Receive Next Pointer Register"
+  hexmask.long 0x10 0.--31. 1 " RXNPTR ,Receive Next Pointer Address"
+ line.long 0x14 "PERIPH_RNCR,Receive Next Counter Register"
+  hexmask.long.word 0x14 0.--15. 1 " RXNCR  ,Receive Next Counter Value"
+ line.long 0x18 "PERIPH_TNPR,Transmit Next Pointer Register"
+  hexmask.long 0x18 0.--31. 1 " TXNPTR ,Transmit Next Pointer Address"
+ line.long 0x1c "PERIPH_TNCR,Transmit Next Counter Register"
+  hexmask.long.word 0x1C 0.--15. 1 " TXNCR  ,Transmit Next Counter Value"
+
+wgroup.long 0x120++0x03
+ line.long 0x00 "PERIPH_PTCR,PDC Transfer Control Register"
+  bitfld.long 0x00 9. " TXTDIS ,Transmitter Transfer Disable" "No effect,Disabled"
+  bitfld.long 0x00 8. "  TXTEN ,Transmitter Transfer Enable" "No effect,Enabled"
+  textline "                      "
+  bitfld.long 0x00 1. " RXTDIS ,Receiver Transfer Disable" "No effect,Disabled"
+  bitfld.long 0x00 0. "  RXTEN ,Receiver Transfer Enable" "No effect,Enabled"
+
+rgroup.long 0x124++0x03
+ line.long 0x00 "PERIPH_PTSR,PDC Transfer Status Register"
+  bitfld.long 0x00 8. " TXTEN  ,Transmitter Transfer Enable" "Disabled,Enabled"
+  bitfld.long 0x00 0. "   RXTEN ,Receiver Transfer Enable" "Disabled,Enabled"
+
+width 0xb
+tree.end
+
+ tree.end
+ endif
+tree.end

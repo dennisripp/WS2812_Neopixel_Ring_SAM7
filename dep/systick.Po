@@ -1,0 +1,50 @@
+bin/systick.o: lib/systick.c \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/stdlib.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/ieeefp.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/_ansi.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/newlib.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/_newlib_version.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/config.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/features.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/reent.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/_ansi.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_types.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/_types.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/_default_types.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/lock.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/cdefs.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/stdlib.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/alloca.h \
+ lib/../AT91SAM7S64.h lib/systick.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/stdint.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_intsup.h \
+ /usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_stdint.h \
+ lib/aic.h lib/isr.h lib/../main.h
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/stdlib.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/ieeefp.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/_ansi.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/newlib.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/_newlib_version.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/config.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/features.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/reent.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/_ansi.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_types.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/_types.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/_default_types.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/lock.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/cdefs.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/stdlib.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/alloca.h:
+lib/../AT91SAM7S64.h:
+lib/systick.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/stdint.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_intsup.h:
+/usr/lib/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_stdint.h:
+lib/aic.h:
+lib/isr.h:
+lib/../main.h:

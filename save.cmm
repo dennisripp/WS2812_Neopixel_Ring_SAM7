@@ -1,0 +1,2 @@
+d.save.BINARY data.bin 0x20ff00..0x20ffff
+ENDDO

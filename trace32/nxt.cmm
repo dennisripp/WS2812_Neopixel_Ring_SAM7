@@ -1,0 +1,121 @@
+;----------------------------------------------------------------------
+;   Aus DVD\files\demo\arm\at91sam7s.cmm
+;----------------------------------------------------------------------
+;
+; Example for flash declaration of Atmel AT91SAM7S internal flash. 
+; 
+; List of AT91SAM7S derivatives and their configuration:
+;
+; CPU-Type        FlashSize   Pagesize  SRAM size  Algorithm
+;                  (Byte)      (Byte)     (Byte)
+; -----------------------------------------------------------
+; AT91SAM7S32      0x8000       0x80      0x2000   efcs.bin
+; AT91SAM7S321     0x8000       0x80      0x2000   efcs.bin
+; AT91SAM7S64     0x10000       0x80      0x4000   efcs.bin
+; AT91SAM7S128    0x20000      0x100      0x8000   efcs2.bin
+; AT91SAM7S256    0x40000      0x100     0x10000   efcs2.bin
+; AT91SAM7S512    0x80000      0x100     0x10000   efcs2.bin
+;
+; The flash is divided into pages of 128 or 256 Byte. For derivatives 
+; with 128 Byte sectors the flash algorithm binary efcs.bin has to be 
+; used. For derivatives with 256 Byte sectors the flash algorithm 
+; binary efcs2.bin has to be used.
+;
+; The internal flash is located at 0x00100000.
+; The internal SRAM is located at  0x00200000.
+;
+; Internal flash is mirrowed to address 0x0 before remap command. 
+; After remap command internal SRAM is mirrowed to address 0x0.
+;
+; HINTS:
+;
+;   Locked pages can be unlocked with FLASH.UNLOCK command and can be 
+;   locked again with FLASH.LOCK command.
+;
+;   Watchdog is critical for flash programming. The flash algorithm is 
+;   serving the watchdog if the watchdog is not used in window mode.
+;
+;   If the watchdog is setup to window mode by a running application 
+;   the watchdog should be either disbaled after first power-up or the 
+;   board should be power-up before every flash programming. If the 
+;   watchdog is disabled after power-up it cannot be enabled again by 
+;   the application because WDT_MR register is write once. Please see 
+;   below the command to disable the watchdog.
+;
+;   GPNVM bit values can be changed via at91sam7-nvm.cmm script.
+;
+; $Author: mobermeir $
+; $Date: 2013-07-02 15:31:50 +0200 (Di, 02 Jul 2013) $
+; $Rev: 2308 $
+;
+
+;========================================================================
+; Configuration information
+;
+; Setup the configuration information out of the table above.
+;
+; Example for AT91SAM7S256
+&flashstart=0x00100000
+&flashsize=0x40000
+&pagesize=0x100
+;&flashalgorithm="~~/demo/arm/flash/long/efcs2.bin"
+&flashalgorithm="trace32/efcs2.bin"
+
+;========================================================================
+; Setup CPU
+SYStem.RESet
+SYStem.CPU AT91SAM7S256
+SYStem.Up
+  
+; Disable watchdog for flash programming if watchdog may be used in 
+; window mode.
+DATA.SET 0xFFFFFD44 %LONG DATA.LONG(ASD:0xFFFFFD44)|0x00008000
+
+;========================================================================
+; Flash declaration
+FLASH.RESet
+IF &flashsize<=0x40000
+(
+  FLASH.Create 1. &flashstart++(&flashsize-1) &pagesize TARGET Long
+)
+ELSE
+(
+  ; Bank EFC0
+  FLASH.Create 1. &flashstart++0x3ffff &pagesize TARGET Long 0.
+  ; Bank EFC1
+  FLASH.Create 2. (&flashstart+0x40000)++(&flashsize-0x40000-1) &pagesize TARGET Long 1.
+)
+FLASH.TARGET 0x00200000 0x00200800 0x1000 &flashalgorithm
+
+;========================================================================
+; Flash NVM bit programming example
+;DIALOG.YESNO "Program flash NVM bits"
+;ENTRY &prognvm
+;IF &prognvm 
+;(
+;  DO at91sam7-nvm
+;)
+
+;========================================================================
+; Flash programming example
+;DIALOG.YESNO "Program flash memory?"
+;ENTRY &progflash
+;IF !&progflash 
+;  ENDDO
+
+; Unlock locked pages if necessary
+;FLASH.UNLOCK ALL
+
+FLASH.Erase.ALL
+FLASH.Program.ALL
+
+Data.LOAD.binary trace32/lms_arm_nbcnxc_128.rfw 0x100000
+;Data.LOAD.auto * /Long
+
+FLASH.Program.off
+
+REGISTER.set pc 0x100000
+
+go
+
+ENDDO
